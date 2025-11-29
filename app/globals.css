@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* --- 1. Paleta de Colores APEX --- */
+  --color-apex-bg: #000000;       /* Negro Base */
+  --color-apex-gold: #ffc800;     /* Dorado Acento */
+  --color-apex-white: #ffffff;    /* Blanco Puro */
+  --color-apex-gray: #A1A1AA;     /* Gris Sutil */
+  --color-apex-surface: #14141A;  /* Superficie */
+
+  /* --- 2. Tipografía --- */
+  /* Vinculamos la variable de Next.js (--font-inter) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Times New Roman", serif;
+
+  /* --- 3. Animaciones y Transiciones --- */
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-fade-in-up: fadeInUp 1.2s var(--ease-smooth) forwards;
+  
+  /* Definimos espaciados personalizados si los necesitamos */
+  --tracking-widest-xl: 0.25em;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* --- Keyframes Estándar --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* --- Estilos Base --- */
+/* Aquí aplicamos los defaults al body para no repetirlos en cada página */
+@layer base {
+  body {
+    background-color: var(--color-apex-bg);
+    color: var(--color-apex-white);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  /* Gradient text for gold using CSS variables to avoid @apply warnings */
+  .text-gold-gradient {
+    background-image: linear-gradient(90deg, var(--color-apex-gold) 0%, #FFF4B8 50%, var(--color-apex-gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
 }
