@@ -16,6 +16,7 @@
   /* --- 3. Animaciones y Transiciones --- */
   --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
   --animate-fade-in-up: fadeInUp 1.2s var(--ease-smooth) forwards;
+  --animate-hero-lift: heroLift 1.4s var(--ease-smooth) forwards;
   
   /* Definimos espaciados personalizados si los necesitamos */
   --tracking-widest-xl: 0.25em;
@@ -30,6 +31,21 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes heroLift {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  60% {
+    opacity: 0.9;
+    transform: translateY(-6px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -54,6 +70,20 @@
     color: transparent;
   }
 
+  .animate-fade-in-up {
+    animation: var(--animate-fade-in-up);
+    will-change: opacity, transform;
+  }
+
+  .animate-hero-lift {
+    animation: var(--animate-hero-lift);
+    will-change: opacity, transform;
+  }
+
+  .tracking-widest-xl {
+    letter-spacing: var(--tracking-widest-xl);
+  }
+
   .delay-100 {
     animation-delay: 100ms;
   }
@@ -64,5 +94,9 @@
 
   .delay-300 {
     animation-delay: 300ms;
+  }
+
+  .ease-smooth {
+    transition-timing-function: var(--ease-smooth);
   }
 }
