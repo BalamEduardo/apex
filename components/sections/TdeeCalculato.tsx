@@ -2,11 +2,90 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Lock, Activity, User, Target, Info } from 'lucide-react';
 
 type ActivityLevel = 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
 type Goal = 'cut' | 'maintain' | 'bulk';
 type Gender = 'male' | 'female';
+
+// Variantes de animación
+const sectionVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const textVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, x: 50, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
+const featureVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
+const formItemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
+const resultVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.9,
+    transition: { duration: 0.3 },
+  },
+};
 
 export default function TdeeCalculator() {
   // Estados del formulario
@@ -95,243 +174,382 @@ export default function TdeeCalculator() {
 
   return (
     <section id="calculadora" className="py-32 bg-apex-bg relative overflow-hidden">
-      {/* Fondo Decorativo */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-apex-gold/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
+      {/* Fondo Decorativo Animado */}
+      <motion.div 
+        className="absolute top-0 right-0 w-[500px] h-[500px] bg-apex-gold/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2"
+        initial={{ opacity: 0, scale: 0.5 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5, ease: 'easeOut' }}
+      />
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={sectionVariants}
+        >
           {/* Texto y Explicación */}
-          <div className="space-y-8">
-            <h2 className="text-4xl md:text-6xl font-bold uppercase leading-none text-white">
+          <motion.div className="space-y-8" variants={textVariants}>
+            <motion.h2 
+              className="text-4xl md:text-6xl font-bold uppercase leading-none text-white"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
               Ingeniería <br />
               <span className="text-apex-gold font-serif italic">Corporal</span>
-            </h2>
-            <p className="text-apex-gray text-lg font-light leading-relaxed max-w-md">
+            </motion.h2>
+            <motion.p 
+              className="text-apex-gray text-lg font-light leading-relaxed max-w-md"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               Olvida las estimaciones genéricas. Utilizamos la fórmula{' '}
               <span className="text-white font-medium">Mifflin-St Jeor</span> y,
               si conoces tus datos, el método{' '}
               <span className="text-white font-medium">Katch-McArdle</span> para
               una precisión atlética.
-            </p>
+            </motion.p>
 
-            <div className="space-y-6 pt-4">
-              <FeatureItem icon={<Activity className="w-5 h-5" />} text="Algoritmo de Precisión Clínica" />
-              <FeatureItem icon={<Target className="w-5 h-5" />} text="Déficit/Superávit Porcentual Inteligente" />
-              <FeatureItem icon={<User className="w-5 h-5" />} text="Adaptable a tu Composición Corporal" />
-            </div>
-          </div>
+            <motion.div 
+              className="space-y-6 pt-4"
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.15,
+                    delayChildren: 0.3,
+                  },
+                },
+              }}
+            >
+              <motion.div variants={featureVariants}>
+                <FeatureItem icon={<Activity className="w-5 h-5" />} text="Algoritmo de Precisión Clínica" />
+              </motion.div>
+              <motion.div variants={featureVariants}>
+                <FeatureItem icon={<Target className="w-5 h-5" />} text="Déficit/Superávit Porcentual Inteligente" />
+              </motion.div>
+              <motion.div variants={featureVariants}>
+                <FeatureItem icon={<User className="w-5 h-5" />} text="Adaptable a tu Composición Corporal" />
+              </motion.div>
+            </motion.div>
+          </motion.div>
 
           {/* Tarjeta Calculadora */}
-          <div className="bg-apex-surface border border-apex-gold/20 p-8 md:p-12 relative backdrop-blur-sm shadow-2xl shadow-black/50">
-            {/* Esquinas Doradas */}
-            <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-apex-gold opacity-50" />
-            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-apex-gold opacity-50" />
+          <motion.div 
+            className="bg-apex-surface border border-apex-gold/20 p-8 md:p-12 relative backdrop-blur-sm shadow-2xl shadow-black/50"
+            variants={cardVariants}
+          >
+            {/* Esquinas Doradas Animadas */}
+            <motion.div 
+              className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-apex-gold opacity-50"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 0.5, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+            />
+            <motion.div 
+              className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-apex-gold opacity-50"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 0.5, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6, duration: 0.4 }}
+            />
 
-            {!showLeadForm ? (
-              <div className="space-y-6 animate-fade-in-up">
-                {/* Género */}
-                <div className="flex gap-4">
-                  <button
-                    onClick={() => setGender('male')}
-                    className={`flex-1 py-3 text-sm tracking-widest uppercase transition-all duration-300 border ${
-                      gender === 'male'
-                        ? 'bg-apex-gold text-apex-bg border-apex-gold font-bold'
-                        : 'bg-transparent text-apex-gray border-white/10 hover:border-white/30'
-                    }`}
-                  >
-                    Hombre
-                  </button>
-                  <button
-                    onClick={() => setGender('female')}
-                    className={`flex-1 py-3 text-sm tracking-widest uppercase transition-all duration-300 border ${
-                      gender === 'female'
-                        ? 'bg-apex-gold text-apex-bg border-apex-gold font-bold'
-                        : 'bg-transparent text-apex-gray border-white/10 hover:border-white/30'
-                    }`}
-                  >
-                    Mujer
-                  </button>
-                </div>
-
-                {/* Inputs Básicos */}
-                <div className="grid grid-cols-3 gap-4">
-                  <InputGroup label="Edad" value={age} onChange={setAge} placeholder="25" type="number" />
-                  <InputGroup label="Peso (kg)" value={weight} onChange={setWeight} placeholder="75" type="number" />
-                  <InputGroup label="Altura (cm)" value={height} onChange={setHeight} placeholder="180" type="number" />
-                </div>
-
-                {/* Input Avanzado: % Grasa */}
-                <div className="relative">
-                  <InputGroup
-                    label="% Grasa Corporal (Opcional)"
-                    value={bodyFat}
-                    onChange={setBodyFat}
-                    placeholder="Ej. 15"
-                    type="number"
-                  />
-                  <div className="absolute top-0 right-0 text-[10px] text-apex-gold/70 flex items-center gap-1 mt-1">
-                    <Info className="w-3 h-3" /> Activa fórmula Katch-McArdle
-                  </div>
-                </div>
-
-                {/* Actividad */}
-                <div className="space-y-2">
-                  <label className="text-xs text-apex-gold uppercase tracking-widest font-bold">
-                    Nivel de Actividad
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={activity}
-                      onChange={(e) => setActivity(e.target.value as ActivityLevel)}
-                      className="w-full bg-black/30 border border-white/10 text-white p-4 focus:outline-none focus:border-apex-gold/50 transition-colors appearance-none text-sm"
-                    >
-                      <option value="sedentary">Sedentario (Oficina, nada de ejercicio)</option>
-                      <option value="light">Ligero (1-3 días/sem o trabajo de pie)</option>
-                      <option value="moderate">Moderado (3-5 días/sem o vida activa)</option>
-                      <option value="active">Activo (6-7 días/sem o trabajo físico)</option>
-                      <option value="very_active">Muy Activo (Doble sesión/atleta)</option>
-                    </select>
-                    {/* Flecha custom para el select */}
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-apex-gray">
-                      <ChevronRight className="w-4 h-4 rotate-90" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Objetivo */}
-                <div className="space-y-2">
-                  <label className="text-xs text-apex-gold uppercase tracking-widest font-bold">
-                    Objetivo Actual
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(['cut', 'maintain', 'bulk'] as Goal[]).map((g) => (
-                      <button
-                        key={g}
-                        onClick={() => setGoal(g)}
-                        className={`py-3 text-xs uppercase tracking-wider border transition-all ${
-                          goal === g
-                            ? 'border-apex-gold text-apex-gold bg-apex-gold/5'
-                            : 'border-white/10 text-apex-gray hover:border-white/30'
-                        }`}
-                      >
-                        {g === 'cut' ? 'Definición' : g === 'maintain' ? 'Mantener' : 'Volumen'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <button
-                  onClick={calculateTDEE}
-                  disabled={!isFormValid}
-                  className={`w-full py-4 font-bold uppercase tracking-widest mt-6 flex items-center justify-center gap-2 group transition-colors duration-300 ${
-                    isFormValid
-                      ? 'bg-white text-apex-bg hover:bg-apex-gold'
-                      : 'bg-white/10 text-apex-gray cursor-not-allowed'
-                  }`}
-                >
-                  Calcular Estrategia
-                  <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </button>
-              </div>
-            ) : (
-              // RESULTADO
-              <div className="text-center space-y-8 animate-fade-in-up py-4">
-                <div>
-                  <p className="text-apex-gray text-sm uppercase tracking-widest mb-2">
-                    {goal === 'cut'
-                      ? 'Objetivo: Déficit (-20%)'
-                      : goal === 'bulk'
-                      ? 'Objetivo: Superávit (+10%)'
-                      : 'Objetivo: Mantenimiento'}
-                  </p>
-                  <div className="text-6xl md:text-7xl font-bold text-white font-serif">
-                    {result}{' '}
-                    <span className="text-2xl text-apex-gold font-sans font-normal">kcal</span>
-                  </div>
-                </div>
-
-                {!isSubmitted ? (
-                  <div className="relative bg-black/20 border border-white/5 p-6 mt-8 overflow-hidden group">
-                    <div className="absolute inset-0 backdrop-blur-md bg-black/40 z-10 flex flex-col items-center justify-center p-6 text-center">
-                      <Lock className="w-8 h-8 text-apex-gold mb-3" />
-                      <h4 className="text-white font-bold uppercase tracking-wide mb-2">Desbloquea tu Macro-Plan</h4>
-                      <p className="text-gray-400 text-xs mb-4 max-w-xs">
-                        Obtén la distribución exacta de proteínas, grasas y carbohidratos para estas calorías.
-                      </p>
-
-                      <form onSubmit={handleLeadSubmit} className="flex w-full gap-2">
-                        <input
-                          type="tel"
-                          placeholder="Tu teléfono"
-                          required
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          className="flex-1 bg-black/50 border border-white/20 text-white px-4 py-2 focus:outline-none focus:border-apex-gold text-sm"
-                        />
-                        <button
-                          type="submit"
-                          className="bg-apex-gold text-apex-bg px-4 py-2 font-bold uppercase text-xs hover:bg-white transition-colors"
-                        >
-                          Ver
-                        </button>
-                      </form>
-                    </div>
-                    {/* Fondo borroso simulado */}
-                    <div className="opacity-30 filter blur-sm select-none space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span>Proteínas</span>
-                        <span>???g</span>
-                      </div>
-                      <div className="w-full h-1 bg-gray-700 rounded">
-                        <div className="w-1/3 h-full bg-apex-gray"></div>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Grasas</span>
-                        <span>???g</span>
-                      </div>
-                      <div className="w-full h-1 bg-gray-700 rounded">
-                        <div className="w-1/4 h-full bg-apex-gray"></div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="bg-black/20 border border-apex-gold/30 p-6 animate-fade-in-up text-left">
-                    <h4 className="text-apex-gold font-bold uppercase tracking-wide mb-4 text-center">
-                      Plan Nutricional APEX
-                    </h4>
-                    <div className="space-y-4 text-sm">
-                      <div className="flex justify-between border-b border-white/10 pb-2">
-                        <span className="text-gray-400">Proteína (~2g/kg)</span>
-                        <span className="text-white font-bold">{proteinGrams}g</span>
-                      </div>
-                      <div className="flex justify-between border-b border-white/10 pb-2">
-                        <span className="text-gray-400">Grasas (25% total)</span>
-                        <span className="text-white font-bold">{fatsGrams}g</span>
-                      </div>
-                      <div className="flex justify-between border-b border-white/10 pb-2">
-                        <span className="text-gray-400">Carbohidratos (Resto)</span>
-                        <span className="text-white font-bold">{carbsGrams}g</span>
-                      </div>
-                    </div>
-                    <p className="text-[10px] text-gray-500 mt-4 text-center">
-                      *Cálculos estimados. Consulta a un profesional.
-                    </p>
-                  </div>
-                )}
-
-                <button
-                  onClick={() => {
-                    setShowLeadForm(false);
-                    setIsSubmitted(false);
+            <AnimatePresence mode="wait">
+              {!showLeadForm ? (
+                <motion.div 
+                  key="form"
+                  className="space-y-6"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+                    },
+                    exit: { opacity: 0, x: -30, transition: { duration: 0.3 } },
                   }}
-                  className="text-xs text-apex-gray hover:text-white underline decoration-apex-gold/50 underline-offset-4"
                 >
-                  Recalcular con otros datos
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+                  {/* Género */}
+                  <motion.div className="flex gap-4" variants={formItemVariants}>
+                    <motion.button
+                      onClick={() => setGender('male')}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`flex-1 py-3 text-sm tracking-widest uppercase transition-all duration-300 border ${
+                        gender === 'male'
+                          ? 'bg-apex-gold text-apex-bg border-apex-gold font-bold'
+                          : 'bg-transparent text-apex-gray border-white/10 hover:border-white/30'
+                      }`}
+                    >
+                      Hombre
+                    </motion.button>
+                    <motion.button
+                      onClick={() => setGender('female')}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`flex-1 py-3 text-sm tracking-widest uppercase transition-all duration-300 border ${
+                        gender === 'female'
+                          ? 'bg-apex-gold text-apex-bg border-apex-gold font-bold'
+                          : 'bg-transparent text-apex-gray border-white/10 hover:border-white/30'
+                      }`}
+                    >
+                      Mujer
+                    </motion.button>
+                  </motion.div>
+
+                  {/* Inputs Básicos */}
+                  <motion.div className="grid grid-cols-3 gap-4" variants={formItemVariants}>
+                    <InputGroup label="Edad" value={age} onChange={setAge} placeholder="25" type="number" />
+                    <InputGroup label="Peso (kg)" value={weight} onChange={setWeight} placeholder="75" type="number" />
+                    <InputGroup label="Altura (cm)" value={height} onChange={setHeight} placeholder="180" type="number" />
+                  </motion.div>
+
+                  {/* Input Avanzado: % Grasa */}
+                  <motion.div className="relative" variants={formItemVariants}>
+                    <InputGroup
+                      label="% Grasa Corporal (Opcional)"
+                      value={bodyFat}
+                      onChange={setBodyFat}
+                      placeholder="Ej. 15"
+                      type="number"
+                    />
+                    <div className="absolute top-0 right-0 text-[10px] text-apex-gold/70 flex items-center gap-1 mt-1">
+                      <Info className="w-3 h-3" /> Activa fórmula Katch-McArdle
+                    </div>
+                  </motion.div>
+
+                  {/* Actividad */}
+                  <motion.div className="space-y-2" variants={formItemVariants}>
+                    <label className="text-xs text-apex-gold uppercase tracking-widest font-bold">
+                      Nivel de Actividad
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={activity}
+                        onChange={(e) => setActivity(e.target.value as ActivityLevel)}
+                        className="w-full bg-black/30 border border-white/10 text-white p-4 focus:outline-none focus:border-apex-gold/50 transition-colors appearance-none text-sm"
+                      >
+                        <option value="sedentary">Sedentario (Oficina, nada de ejercicio)</option>
+                        <option value="light">Ligero (1-3 días/sem o trabajo de pie)</option>
+                        <option value="moderate">Moderado (3-5 días/sem o vida activa)</option>
+                        <option value="active">Activo (6-7 días/sem o trabajo físico)</option>
+                        <option value="very_active">Muy Activo (Doble sesión/atleta)</option>
+                      </select>
+                      {/* Flecha custom para el select */}
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-apex-gray">
+                        <ChevronRight className="w-4 h-4 rotate-90" />
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Objetivo */}
+                  <motion.div className="space-y-2" variants={formItemVariants}>
+                    <label className="text-xs text-apex-gold uppercase tracking-widest font-bold">
+                      Objetivo Actual
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {(['cut', 'maintain', 'bulk'] as Goal[]).map((g) => (
+                        <motion.button
+                          key={g}
+                          onClick={() => setGoal(g)}
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.97 }}
+                          className={`py-3 text-xs uppercase tracking-wider border transition-all ${
+                            goal === g
+                              ? 'border-apex-gold text-apex-gold bg-apex-gold/5'
+                              : 'border-white/10 text-apex-gray hover:border-white/30'
+                          }`}
+                        >
+                          {g === 'cut' ? 'Definición' : g === 'maintain' ? 'Mantener' : 'Volumen'}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  <motion.button
+                    onClick={calculateTDEE}
+                    disabled={!isFormValid}
+                    variants={formItemVariants}
+                    whileHover={isFormValid ? { scale: 1.02 } : {}}
+                    whileTap={isFormValid ? { scale: 0.98 } : {}}
+                    className={`w-full py-4 font-bold uppercase tracking-widest mt-6 flex items-center justify-center gap-2 group transition-colors duration-300 ${
+                      isFormValid
+                        ? 'bg-white text-apex-bg hover:bg-apex-gold'
+                        : 'bg-white/10 text-apex-gray cursor-not-allowed'
+                    }`}
+                  >
+                    Calcular Estrategia
+                    <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </motion.button>
+                </motion.div>
+              ) : (
+                // RESULTADO
+                <motion.div 
+                  key="result"
+                  className="text-center space-y-8 py-4"
+                  variants={resultVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1, duration: 0.5 }}
+                  >
+                    <p className="text-apex-gray text-sm uppercase tracking-widest mb-2">
+                      {goal === 'cut'
+                        ? 'Objetivo: Déficit (-20%)'
+                        : goal === 'bulk'
+                        ? 'Objetivo: Superávit (+10%)'
+                        : 'Objetivo: Mantenimiento'}
+                    </p>
+                    <motion.div 
+                      className="text-6xl md:text-7xl font-bold text-white font-serif"
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.2, duration: 0.6, type: 'spring', stiffness: 150 }}
+                    >
+                      {result}{' '}
+                      <span className="text-2xl text-apex-gold font-sans font-normal">kcal</span>
+                    </motion.div>
+                  </motion.div>
+
+                  <AnimatePresence mode="wait">
+                    {!isSubmitted ? (
+                      <motion.div 
+                        key="lead-form"
+                        className="relative bg-black/20 border border-white/5 p-6 mt-8 overflow-hidden group"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ delay: 0.3, duration: 0.5 }}
+                      >
+                        <div className="absolute inset-0 backdrop-blur-md bg-black/40 z-10 flex flex-col items-center justify-center p-6 text-center">
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.4, type: 'spring', stiffness: 200 }}
+                          >
+                            <Lock className="w-8 h-8 text-apex-gold mb-3" />
+                          </motion.div>
+                          <h4 className="text-white font-bold uppercase tracking-wide mb-2">Desbloquea tu Macro-Plan</h4>
+                          <p className="text-gray-400 text-xs mb-4 max-w-xs">
+                            Obtén la distribución exacta de proteínas, grasas y carbohidratos para estas calorías.
+                          </p>
+
+                          <form onSubmit={handleLeadSubmit} className="flex w-full gap-2">
+                            <input
+                              type="tel"
+                              placeholder="Tu teléfono"
+                              required
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              className="flex-1 bg-black/50 border border-white/20 text-white px-4 py-2 focus:outline-none focus:border-apex-gold text-sm"
+                            />
+                            <motion.button
+                              type="submit"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="bg-apex-gold text-apex-bg px-4 py-2 font-bold uppercase text-xs hover:bg-white transition-colors"
+                            >
+                              Ver
+                            </motion.button>
+                          </form>
+                        </div>
+                        {/* Fondo borroso simulado */}
+                        <div className="opacity-30 filter blur-sm select-none space-y-3">
+                          <div className="flex justify-between text-sm">
+                            <span>Proteínas</span>
+                            <span>???g</span>
+                          </div>
+                          <div className="w-full h-1 bg-gray-700 rounded">
+                            <div className="w-1/3 h-full bg-apex-gray"></div>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span>Grasas</span>
+                            <span>???g</span>
+                          </div>
+                          <div className="w-full h-1 bg-gray-700 rounded">
+                            <div className="w-1/4 h-full bg-apex-gray"></div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div 
+                        key="macros"
+                        className="bg-black/20 border border-apex-gold/30 p-6 text-left"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <h4 className="text-apex-gold font-bold uppercase tracking-wide mb-4 text-center">
+                          Plan Nutricional APEX
+                        </h4>
+                        <motion.div 
+                          className="space-y-4 text-sm"
+                          initial="hidden"
+                          animate="visible"
+                          variants={{
+                            visible: {
+                              transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+                            },
+                          }}
+                        >
+                          <motion.div 
+                            className="flex justify-between border-b border-white/10 pb-2"
+                            variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}
+                          >
+                            <span className="text-gray-400">Proteína (~2g/kg)</span>
+                            <span className="text-white font-bold">{proteinGrams}g</span>
+                          </motion.div>
+                          <motion.div 
+                            className="flex justify-between border-b border-white/10 pb-2"
+                            variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}
+                          >
+                            <span className="text-gray-400">Grasas (25% total)</span>
+                            <span className="text-white font-bold">{fatsGrams}g</span>
+                          </motion.div>
+                          <motion.div 
+                            className="flex justify-between border-b border-white/10 pb-2"
+                            variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}
+                          >
+                            <span className="text-gray-400">Carbohidratos (Resto)</span>
+                            <span className="text-white font-bold">{carbsGrams}g</span>
+                          </motion.div>
+                        </motion.div>
+                        <p className="text-[10px] text-gray-500 mt-4 text-center">
+                          *Cálculos estimados. Consulta a un profesional.
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <motion.button
+                    onClick={() => {
+                      setShowLeadForm(false);
+                      setIsSubmitted(false);
+                    }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="text-xs text-apex-gray hover:text-white underline decoration-apex-gold/50 underline-offset-4"
+                  >
+                    Recalcular con otros datos
+                  </motion.button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

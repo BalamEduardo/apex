@@ -1,5 +1,8 @@
 // components/sections/Memberships.tsx
+'use client';
+
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Check, Crown } from 'lucide-react';
 
 const plans = [
@@ -14,7 +17,6 @@ const plans = [
       'Acceso 24/7'
     ],
     highlight: false,
-    delay: 'delay-100'
   },
   {
     name: 'Performance',
@@ -27,8 +29,7 @@ const plans = [
       '1 Sesión de Inbody mensual',
       'Acceso a invitados (2/mes)'
     ],
-    highlight: true, // Plan destacado
-    delay: 'delay-200'
+    highlight: true,
   },
   {
     name: 'Signature',
@@ -43,9 +44,32 @@ const plans = [
       'Valet Parking incluido'
     ],
     highlight: false,
-    delay: 'delay-300'
   }
 ];
+
+// Variantes simplificadas para evitar parpadeos
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut" as const,
+    },
+  },
+};
 
 export default function Memberships() {
   return (
@@ -53,27 +77,43 @@ export default function Memberships() {
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header de Sección */}
-        <div className="text-center mb-20 animate-fade-in-up">
+        <motion.div 
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6 }}
+        >
           <span className="text-apex-gold text-xs font-bold tracking-widest-xl uppercase mb-4 block">
             Membresías
           </span>
           <h2 className="text-4xl md:text-6xl font-bold text-white uppercase leading-none">
             Elige tu <span className="text-apex-gold font-serif italic normal-case">Legado</span>
           </h2>
-        </div>
+        </motion.div>
 
         {/* Grid de Planes */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={containerVariants}
+        >
           {plans.map((plan) => (
-            <article 
+            <motion.article 
               key={plan.name}
+              variants={cardVariants}
+              whileHover={{ 
+                y: -8,
+                transition: { duration: 0.3, ease: 'easeOut' }
+              }}
               className={`
-                group relative p-8 md:p-10 border transition-all duration-500 hover:-translate-y-2
+                group relative p-8 md:p-10 border transition-colors duration-300
                 ${plan.highlight 
                   ? 'bg-apex-surface border-apex-gold/30 shadow-[0_0_30px_-10px_rgba(255,200,0,0.1)] md:scale-105 z-10' 
                   : 'bg-black border-white/10 hover:border-white/20 hover:bg-apex-surface/50'
                 }
-                ${plan.delay} animate-fade-in-up
               `}
             >
               {/* Badge para el plan destacado */}
@@ -110,7 +150,7 @@ export default function Memberships() {
                     className="flex items-start gap-3 text-sm text-gray-300 group-hover:text-white transition-colors"
                   >
                     <Check
-                      className={`w-4 h-4 mt-0.5 ${
+                      className={`w-4 h-4 mt-0.5 transition-colors ${
                         plan.highlight ? 'text-apex-gold' : 'text-gray-600 group-hover:text-apex-gold'
                       }`}
                     />
@@ -120,8 +160,10 @@ export default function Memberships() {
               </ul>
 
               {/* Botón CTA */}
-              <button 
+              <motion.button 
                 type="button"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 className={`
                   w-full py-4 text-xs font-bold uppercase tracking-widest transition-all duration-300
                   ${plan.highlight 
@@ -131,13 +173,19 @@ export default function Memberships() {
                 `}
               >
                 {plan.name === 'Signature' ? 'Aplicar Ahora' : 'Empezar Ahora'}
-              </button>
-            </article>
+              </motion.button>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
 
         {/* Nota al pie */}
-        <div className="mt-16 text-center">
+        <motion.div 
+          className="mt-16 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           <p className="text-gray-500 text-xs font-light">
             * Todas las membresías incluyen una evaluación inicial obligatoria. <br className="md:hidden" />
             <a
@@ -147,7 +195,7 @@ export default function Memberships() {
               Contáctanos para un tour privado.
             </a>
           </p>
-        </div>
+        </motion.div>
 
       </div>
     </section>

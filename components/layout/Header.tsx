@@ -86,10 +86,12 @@ export default function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const menuItems = [
-    { label: 'INICIO', href: '/' },
-    { label: 'SERVICIOS', href: '#servicios' },
-    { label: 'NOSOTROS', href: '#nosotros' },
-    { label: 'CONTACTO', href: '#contacto' },
+    { label: 'INICIO', href: '/#hero', description: 'Bienvenida' },
+    { label: 'FILOSOFÍA', href: '/#filosofia', description: 'Nuestra esencia' },
+    { label: 'ESPACIOS', href: '/#gallery', description: 'Galería & zonas' },
+    { label: 'TESTIMONIOS', href: '/#testimonios', description: 'Lo que dicen' },
+    { label: 'MEMBRESÍAS', href: '/#membresias', description: 'Planes exclusivos' },
+    { label: 'CONTACTO', href: '/#contacto', description: 'Agenda tu visita' },
   ];
 
   return (
@@ -149,52 +151,92 @@ export default function Header() {
       >
         <div className="relative flex flex-col h-full p-6">
           {/* Header del Overlay */}
-          <div className="flex justify-center items-center pt-2">
-            <div className="text-2xl font-bold tracking-widest-xl text-white">APEX</div>
+          <div className="flex justify-center items-center pt-2 pb-8 border-b border-white/10">
+            <div className="flex items-center gap-3">
+              {/* Logo símbolo pequeño */}
+              <span className="relative inline-flex w-4 h-4 items-center justify-center">
+                <span className="block w-4 h-4 border border-apex-gold rotate-45"></span>
+                <span className="absolute w-1 h-1 bg-apex-gold rounded-full"></span>
+              </span>
+              <span className="text-lg font-bold tracking-widest-xl text-white">APEX</span>
+            </div>
           </div>
 
           {/* Enlaces de Navegación */}
-          <nav className="flex-1 flex flex-col justify-center items-center gap-8">
+          <nav className="flex-1 flex flex-col justify-center items-start px-8 md:px-16 lg:px-24 gap-4 md:gap-6">
             {menuItems.map((item, index) => (
               <Link
                 key={item.label}
                 href={item.href}
                 onClick={toggleMenu}
-                className="text-4xl md:text-6xl font-serif italic text-white hover:text-apex-gold transition-all duration-500 hover:scale-105 ease-smooth"
+                className="group relative overflow-hidden"
                 style={{ 
-                  transitionDelay: isMenuOpen ? `${index * 100}ms` : '0ms',
-                  opacity: isMenuOpen ? 1 : 0,
-                  transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)'
+                  transitionDelay: isMenuOpen ? `${index * 80}ms` : '0ms',
                 }}
               >
-                  {item.label}
+                <div 
+                  className="flex items-baseline gap-4 transition-all duration-500 ease-smooth"
+                  style={{
+                    opacity: isMenuOpen ? 1 : 0,
+                    transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
+                    transitionDelay: isMenuOpen ? `${index * 80}ms` : '0ms',
+                  }}
+                >
+                  {/* Número de índice */}
+                  <span className="text-xs text-apex-gold/60 font-mono tracking-wider">
+                    0{index + 1}
+                  </span>
+                  
+                  {/* Texto principal */}
+                  <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white group-hover:text-apex-gold transition-colors duration-300">
+                    {item.label}
+                  </span>
+                  
+                  {/* Descripción (solo desktop) */}
+                  <span className="hidden lg:block text-sm text-white/40 group-hover:text-white/60 transition-colors duration-300 ml-4">
+                    {item.description}
+                  </span>
+                </div>
+                
+                {/* Línea animada debajo */}
+                <div className="absolute bottom-0 left-8 right-0 h-px bg-white/10">
+                  <div className="h-full w-0 bg-apex-gold group-hover:w-full transition-all duration-500 ease-smooth" />
+                </div>
               </Link>
             ))}
           </nav>
 
           {/* Footer del Overlay */}
-          <div className="flex justify-between items-end text-apex-gray text-sm pb-8 border-t border-white/10 pt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 text-sm pb-8 border-t border-white/10 pt-8">
             <div className="flex flex-col gap-2">
-              <span>hello@apex-studio.com</span>
-              <span>Polanco, CDMX</span>
+              <span className="text-[0.65rem] tracking-widest-xl uppercase text-apex-gold/70 mb-1">Contacto</span>
+              <a href="mailto:hello@apex-studio.com" className="text-white/70 hover:text-apex-gold transition-colors">
+                hello@apex-studio.com
+              </a>
+              <span className="text-white/50">Polanco, CDMX</span>
             </div>
-            <div className="flex gap-4">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-apex-gold transition-colors"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-apex-gold transition-colors"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
+            <div className="flex flex-col items-start sm:items-end gap-3">
+              <span className="text-[0.65rem] tracking-widest-xl uppercase text-apex-gold/70">Síguenos</span>
+              <div className="flex gap-4">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/50 hover:text-apex-gold transition-colors duration-300"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/50 hover:text-apex-gold transition-colors duration-300"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
