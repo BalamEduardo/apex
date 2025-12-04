@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+
 export default function Storytelling() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const lineRef = useRef<HTMLDivElement | null>(null);
@@ -22,17 +24,12 @@ export default function Storytelling() {
       const height = sectionRef.current.offsetHeight;
 
       // Progreso "suave" a través de la sección
-      const raw = Math.max(
-        0,
-        Math.min(1, (win - rect.top) / (height + win * 0.6))
-      );
-
-      const eased = 1 - Math.pow(1 - raw, 3); // ease-out
+      const raw = clamp01((win - rect.top) / (height + win * 0.6));
       const active = raw > 0.12 && raw < 0.95;
 
       // ---- LÍNEA DORADA ----
       if (lineRef.current) {
-        const t = Math.max(0, Math.min(1, (raw - 0.1) / 0.8));
+        const t = clamp01((raw - 0.1) / 0.8);
 
         const scaleX = 0.05 + t * 0.95;
         const opacity = 0.2 + t * 0.8;
@@ -46,14 +43,14 @@ export default function Storytelling() {
 
       // ---- LABEL IZQUIERDA SE VA ----
       if (leftLabelRef.current) {
-        const t = Math.max(0, Math.min(1, (raw - 0.2) / 0.5));
+        const t = clamp01((raw - 0.2) / 0.5);
         leftLabelRef.current.style.opacity = `${1 - t}`;
         leftLabelRef.current.style.transform = `translateX(${-t * 20}px)`;
       }
 
       // ---- LABEL DERECHA ENTRA ----
       if (rightLabelRef.current) {
-        const t = Math.max(0, Math.min(1, (raw - 0.3) / 0.55));
+        const t = clamp01((raw - 0.3) / 0.55);
         rightLabelRef.current.style.opacity = `${t}`;
         rightLabelRef.current.style.transform = `translateX(${(1 - t) * 20}px)`;
       }
@@ -62,7 +59,7 @@ export default function Storytelling() {
       if (textMaskRef.current) {
         const start = 0.18;
         const end = 0.85;
-        const t = Math.max(0, Math.min(1, (raw - start) / (end - start)));
+        const t = clamp01((raw - start) / (end - start));
 
         textMaskRef.current.style.clipPath = `inset(0 ${(1 - t) * 100}% 0 0)`;
         textMaskRef.current.style.opacity = `${0.2 + t * 0.8}`;
@@ -73,7 +70,7 @@ export default function Storytelling() {
       if (topTextRef.current) {
         const start = 0.12;
         const end = 0.55;
-        const t = Math.max(0, Math.min(1, (raw - start) / (end - start)));
+        const t = clamp01((raw - start) / (end - start));
 
         const opacity = t; // 0 → 1
         const translateY = (1 - t) * 16; // baja → se asienta
@@ -86,7 +83,7 @@ export default function Storytelling() {
       if (bottomTextRef.current) {
         const start = 0.3;
         const end = 0.9;
-        const t = Math.max(0, Math.min(1, (raw - start) / (end - start)));
+        const t = clamp01((raw - start) / (end - start));
 
         const opacity = t; // 0 → 1
         const translateY = (1 - t) * 16;
@@ -139,8 +136,12 @@ export default function Storytelling() {
             {/* TOP PHRASE ANIMADA */}
             <p
               ref={topTextRef}
-              className="text-sm md:text-xs tracking-[0.4em] uppercase text-apex-gold/70 font-semibold"
-              style={{ opacity: 0, transform: 'translateY(16px)', willChange: 'transform, opacity' }}
+              className="text-xs md:text-sm tracking-[0.4em] uppercase text-apex-gold/70 font-semibold"
+              style={{
+                opacity: 0,
+                transform: 'translateY(16px)',
+                willChange: 'transform, opacity',
+              }}
             >
               Entre idea y materia
             </p>
@@ -155,16 +156,21 @@ export default function Storytelling() {
               }}
             >
               <p className="text-2xl md:text-3xl lg:text-4xl xl:text-[2.6rem] font-light text-white/95 font-serif italic leading-relaxed">
-                “Cada sesión comienza en la <span className="text-apex-gold">mente</span>,  
-                pero se firma en el <span className="text-apex-gold">espacio</span>.”
+                “Cada sesión comienza en la{' '}
+                <span className="text-apex-gold">mente</span>, pero se firma en
+                el <span className="text-apex-gold">espacio</span>.”
               </p>
             </div>
 
             {/* BOTTOM PHRASE ANIMADA */}
             <p
               ref={bottomTextRef}
-              className="text-[0.75rem] md:text-sm text-white/45 tracking-widest-xl uppercase"
-              style={{ opacity: 0, transform: 'translateY(16px)', willChange: 'transform, opacity' }}
+              className="text-[0.75rem] md:text-sm text-white/45 tracking-[0.35em] uppercase"
+              style={{
+                opacity: 0,
+                transform: 'translateY(16px)',
+                willChange: 'transform, opacity',
+              }}
             >
               Intención · Presencia · Arquitectura del cuerpo
             </p>
