@@ -20,33 +20,29 @@ const MenuToggleButton = ({ isOpen, onToggle }: MenuToggleButtonProps) => {
       onClick={onToggle}
       aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
       aria-expanded={isOpen}
-      className={`group fixed left-4 top-4 sm:left-6 sm:top-5 z-70 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full shadow-lg transition-all duration-500 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg ${
-        isOpen ? 'bg-apex-gold shadow-apex-gold/10' : 'bg-white/95 shadow-black/20 hover:shadow-black/30'
-      }`}
+      className={`group fixed left-4 top-4 sm:left-6 sm:top-5 z-70 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full shadow-lg transition-all duration-500 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg ${isOpen ? 'bg-apex-gold shadow-apex-gold/10' : 'bg-white/95 shadow-black/20 hover:shadow-black/30'
+        }`}
     >
       <span className="sr-only">{isOpen ? 'Cerrar menú' : 'Abrir menú'}</span>
       <span className="relative flex w-5 md:w-6 flex-col items-center justify-center gap-1.5">
         <span
           aria-hidden
-          className={`${lineBase} ${
-            isOpen
-              ? 'translate-y-2 rotate-45'
-              : 'group-hover:translate-y-1.5'
-          }`}
+          className={`${lineBase} ${isOpen
+            ? 'translate-y-2 rotate-45'
+            : 'group-hover:translate-y-1.5'
+            }`}
         />
         <span
           aria-hidden
-          className={`${lineBase} ${
-            isOpen ? 'opacity-0' : 'group-hover:scale-x-0'
-          }`}
+          className={`${lineBase} ${isOpen ? 'opacity-0' : 'group-hover:scale-x-0'
+            }`}
         />
         <span
           aria-hidden
-          className={`${lineBase} ${
-            isOpen
-              ? '-translate-y-2 -rotate-45'
-              : 'group-hover:-translate-y-1.5'
-          }`}
+          className={`${lineBase} ${isOpen
+            ? '-translate-y-2 -rotate-45'
+            : 'group-hover:-translate-y-1.5'
+            }`}
         />
       </span>
     </button>
@@ -100,12 +96,11 @@ export default function Header() {
 
       {/* Header Principal - Flotante y Transparente */}
       <header
-        className={`fixed w-full top-0 z-50 px-6 py-4 transition-all duration-300 ${
-          !isHome || scrolled ? 'backdrop-blur-sm bg-apex-bg/50' : 'bg-transparent'
-        }`}
+        className={`fixed w-full top-0 z-50 px-6 py-4 transition-all duration-300 ${!isHome || scrolled ? 'backdrop-blur-sm bg-apex-bg/50' : 'bg-transparent'
+          }`}
       >
         <div className="relative flex items-center justify-between max-w-[1920px] mx-auto">
-          
+
           {/* Izquierda: espacio reservado para mantener el balance visual */}
           <div className="w-10 h-10 md:w-12 md:h-12" />
 
@@ -125,16 +120,16 @@ export default function Header() {
           </div>
 
           {/* Derecha: Calculadora TDEE */}
-          <Link 
+          <Link
             href="/calculadora"
             className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-white text-apex-bg font-medium hover:bg-apex-gold transition-colors duration-300 ease-smooth"
           >
             <Calculator className="w-4 h-4" />
             <span className="text-[0.670rem] tracking-wider">CALCULADORA TDEE</span>
           </Link>
-          
+
           {/* Mobile Icon for Calculator */}
-          <Link 
+          <Link
             href="/calculadora"
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-white text-apex-bg hover:bg-apex-gold transition-colors duration-300 ease-smooth"
           >
@@ -144,10 +139,8 @@ export default function Header() {
       </header>
 
       {/* Menú Overlay */}
-      <div 
-        className={`fixed inset-0 z-60 bg-apex-bg/95 backdrop-blur-xl transition-all duration-700 ease-smooth ${
-          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-        }`}
+      <div
+        className={`fixed inset-0 z-60bg-apex-bg/98 md:bg-apex-bg/95 md:backdrop-blur-xl transition-opacity duration-500 ease-smooth  ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} `}
       >
         <div className="relative flex flex-col h-full p-6">
           {/* Header del Overlay */}
@@ -170,41 +163,34 @@ export default function Header() {
                 href={item.href}
                 onClick={toggleMenu}
                 className="group relative overflow-hidden"
-                style={{ 
+                style={{
                   transitionDelay: isMenuOpen ? `${index * 80}ms` : '0ms',
                 }}
               >
-                <div 
-                  className="flex items-baseline gap-4 transition-all duration-500 ease-smooth"
+                <div
+                  className={`flex items-baseline gap-4 transform transition-all duration-500 ease-smooth ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} `}
                   style={{
-                    opacity: isMenuOpen ? 1 : 0,
-                    transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
                     transitionDelay: isMenuOpen ? `${index * 80}ms` : '0ms',
                   }}
                 >
-                  {/* Número de índice */}
                   <span className="text-xs text-apex-gold/60 font-mono tracking-wider">
                     0{index + 1}
                   </span>
-                  
-                  {/* Texto principal */}
                   <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white group-hover:text-apex-gold transition-colors duration-300">
                     {item.label}
                   </span>
-                  
-                  {/* Descripción (solo desktop) */}
                   <span className="hidden lg:block text-sm text-white/40 group-hover:text-white/60 transition-colors duration-300 ml-4">
                     {item.description}
                   </span>
                 </div>
-                
-                {/* Línea animada debajo */}
+
                 <div className="absolute bottom-0 left-8 right-0 h-px bg-white/10">
                   <div className="h-full w-0 bg-apex-gold group-hover:w-full transition-all duration-500 ease-smooth" />
                 </div>
               </Link>
             ))}
           </nav>
+
 
           {/* Footer del Overlay */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 text-sm pb-8 border-t border-white/10 pt-8">
