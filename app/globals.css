@@ -114,12 +114,31 @@
 /* --- Estilos Base --- */
 /* Aquí aplicamos los defaults al body para no repetirlos en cada página */
 @layer base {
+  /* Anti-FOUC: Asegura que los estilos críticos estén desde el SSR */
+  html {
+    background-color: var(--color-apex-bg);
+    color: var(--color-apex-white);
+  }
+  
   body {
     background-color: var(--color-apex-bg);
     color: var(--color-apex-white);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Fix para evitar efectos hover en dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .group:hover .group-hover\:opacity-100 {
+    opacity: inherit;
+  }
+  .group:hover .group-hover\:scale-105 {
+    transform: none;
+  }
+  .group:hover .group-hover\:grayscale-0 {
+    filter: none;
   }
 }
 

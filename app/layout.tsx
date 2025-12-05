@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import ScrollRestoration from "./scroll-restoration";
 
 // 1. Configuración de la fuente Inter
 // Se cargan solo los pesos necesarios para rendimiento óptimo
@@ -11,6 +12,7 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700", "900"], // Light, Regular, SemiBold, Bold, Black
   display: "swap",
+  preload: true, // Precarga la fuente para evitar FOUT
 });
 
 // 2. Metadatos SEO (Title & Description)
@@ -29,9 +31,11 @@ export default function RootLayout({
       <body
         // 3. Inyección de variables y clases base
         // ${inter.variable} -> Hace disponible la fuente para Tailwind
+        // font-sans -> Aplica la fuente inmediatamente (evita FOUT)
         // antialiased -> Suavizado de fuentes para estética premium
-        className={`${inter.variable} antialiased bg-apex-bg text-white`}
+        className={`${inter.variable} font-sans antialiased bg-apex-bg text-white`}
       >
+        <ScrollRestoration />
         <Header />
         <main className="min-h-screen">
           {children}
