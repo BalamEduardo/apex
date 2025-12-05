@@ -140,7 +140,7 @@ export default function Header() {
 
       {/* Menú Overlay */}
       <div
-        className={`fixed inset-0 z-60bg-apex-bg/98 md:bg-apex-bg/95 md:backdrop-blur-xl transition-opacity duration-500 ease-smooth  ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'} `}
+        className={`fixed inset-0 z-60 bg-apex-bg/98 md:bg-apex-bg/95 md:backdrop-blur-xl transition-opacity duration-500 ease-smooth ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
       >
         <div className="relative flex flex-col h-full p-6">
           {/* Header del Overlay */}
