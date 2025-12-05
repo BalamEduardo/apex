@@ -87,7 +87,7 @@ export default function Memberships() {
           <span className="text-apex-gold text-xs font-bold tracking-widest-xl uppercase mb-4 block">
             Membresías
           </span>
-          <h2 className="text-4xl md:text-6xl font-bold text-white uppercase leading-none">
+          <h2 className="text-4xl md:text-6xl font-light text-white uppercase leading-none">
             Elige tu <span className="text-apex-gold font-serif italic normal-case">Legado</span>
           </h2>
         </motion.div>

@@ -7,6 +7,7 @@ import Testimonials from '@/components/sections/Testimonials';
 import TdeeCalculator from '@/components/sections/TdeeCalculato';
 import Memberships from '@/components/sections/Memberships';
 import QuickRegister from '@/components/sections/QuickRegister';
+import Coaches from '@/components/sections/Coaches';
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <Philosophy />
       <Storytelling />
       <Gallery />
+      <Coaches />
       <Testimonials />
       <TdeeCalculator />
       <Memberships />

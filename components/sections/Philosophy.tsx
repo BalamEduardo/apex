@@ -28,7 +28,7 @@ const philosophyItems = [
   }
 ];
 
-function useReveal(threshold = 0.2) {
+function useReveal(threshold = 0.5) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -37,11 +37,14 @@ function useReveal(threshold = 0.2) {
     if (!element) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(entry.target);
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          // Solo marcamos visible cuando el ratio supera el threshold
+          if (entry.intersectionRatio >= threshold) {
+            setVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
       },
       { threshold }
     );
@@ -60,7 +63,7 @@ export default function Philosophy() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start mb-32 gap-10">
           <div className="flex-1">
-            <h2 className="text-5xl md:text-7xl font-bold uppercase leading-tight">
+            <h2 className="text-4xl md:text-6xl font-light uppercase leading-tight">
               Nuestra <br />
               <span className="text-apex-gold italic font-serif">Filosofía</span>
             </h2>
@@ -90,8 +93,15 @@ export default function Philosophy() {
   );
 }
 
-function PhilosophyItem({ item, index }: { item: typeof philosophyItems[0], index: number }) {
-  const { ref, visible } = useReveal(0.25);
+function PhilosophyItem({
+  item,
+  index,
+}: {
+  item: (typeof philosophyItems)[0];
+  index: number;
+}) {
+  // threshold alto para que el reveal ocurra cuando ya se ve bien el bloque
+  const { ref, visible } = useReveal(0.4);
   const isEven = index % 2 === 0;
 
   return (
@@ -114,7 +124,12 @@ function PhilosophyItem({ item, index }: { item: typeof philosophyItems[0], inde
           className={[
             'w-full h-full bg-neutral-900/50 flex items-center justify-center',
             'transition-all duration-1400ms ease-[cubic-bezier(0.22,0.61,0.36,1)]',
-            'grayscale group-hover:grayscale-30',
+            // Mobile: cambio de gris a color con el reveal
+            visible ? 'grayscale-0' : 'grayscale',
+            // Desktop: se mantiene como la versión original
+            // (gris por defecto, menos gris al hover)
+            'md:grayscale md:group-hover:grayscale-30',
+            // Zoom sutil al aparecer (igual que tu versión original)
             visible ? 'scale-100' : 'scale-[1.02]',
           ].join(' ')}
           style={{
@@ -130,7 +145,7 @@ function PhilosophyItem({ item, index }: { item: typeof philosophyItems[0], inde
           />
         </div>
 
-        {/* Sutil overlay para un toque de “reveal”, no rompecabezas agresivo */}
+        {/* Overlay igual que al inicio (solo hover, desktop) */}
         <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-black/10 opacity-0 transition-opacity duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:opacity-100" />
       </div>
 
@@ -143,16 +158,19 @@ function PhilosophyItem({ item, index }: { item: typeof philosophyItems[0], inde
         ].join(' ')}
       >
         <span className="pointer-events-none absolute left-6 md:left-10 top-6 bottom-6 w-px bg-linear-to-b from-transparent via-white/20 to-transparent group-hover:via-apex-gold/60 transition-all duration-1400ms" />
+
         <span className="pointer-events-none absolute inset-y-0 right-0 w-1/2 translate-x-1/4 bg-apex-gold/10 blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-1500ms" />
+
         <div className="w-full pl-8 md:pl-16">
-      
           {/* ID grande */}
           <span
             className={[
               'block text-6xl md:text-8xl font-serif italic select-none leading-none mb-6',
-              'text-white/5 transition-colors duration-2000ms ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:text-apex-gold/50',
               'will-change-transform',
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
+              // Mobile: color controlado por el reveal
+              visible ? 'opacity-100 translate-y-0 text-apex-gold/50' : 'opacity-0 translate-y-4 text-white/10',
+              // Desktop: comportamiento original (blanco tenue + dorado en hover)
+              'md:opacity-100 md:translate-y-0 md:text-white/5 md:group-hover:text-apex-gold/50',
             ].join(' ')}
             style={{
               transitionProperty: 'color, opacity, transform',

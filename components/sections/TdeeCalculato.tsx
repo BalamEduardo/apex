@@ -194,7 +194,7 @@ export default function TdeeCalculator() {
           {/* Texto y Explicación */}
           <motion.div className="space-y-8" variants={textVariants}>
             <motion.h2 
-              className="text-4xl md:text-6xl font-bold uppercase leading-none text-white"
+              className="text-4xl md:text-6xl font-light uppercase leading-none text-white"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -284,7 +284,7 @@ export default function TdeeCalculator() {
                       onClick={() => setGender('male')}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`flex-1 py-3 text-sm tracking-widest uppercase transition-all duration-300 border ${
+                      className={`flex-1 py-3 text-[10px] md:text-sm tracking-widest uppercase transition-all duration-300 border ${
                         gender === 'male'
                           ? 'bg-apex-gold text-apex-bg border-apex-gold font-bold'
                           : 'bg-transparent text-apex-gray border-white/10 hover:border-white/30'
@@ -296,7 +296,7 @@ export default function TdeeCalculator() {
                       onClick={() => setGender('female')}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`flex-1 py-3 text-sm tracking-widest uppercase transition-all duration-300 border ${
+                      className={`flex-1 py-3 text-[10px] md:text-sm tracking-widest uppercase transition-all duration-300 border ${
                         gender === 'female'
                           ? 'bg-apex-gold text-apex-bg border-apex-gold font-bold'
                           : 'bg-transparent text-apex-gray border-white/10 hover:border-white/30'
@@ -307,14 +307,61 @@ export default function TdeeCalculator() {
                   </motion.div>
 
                   {/* Inputs Básicos */}
-                  <motion.div className="grid grid-cols-3 gap-4" variants={formItemVariants}>
-                    <InputGroup label="Edad" value={age} onChange={setAge} placeholder="25" type="number" />
-                    <InputGroup label="Peso (kg)" value={weight} onChange={setWeight} placeholder="75" type="number" />
-                    <InputGroup label="Altura (cm)" value={height} onChange={setHeight} placeholder="180" type="number" />
-                  </motion.div>
+                    <motion.div className="grid grid-cols-3 gap-4" variants={formItemVariants}>
+                    <div className="space-y-2">
+                      <label
+                      htmlFor="edad"
+                      className="text-[10px] text-apex-gold uppercase tracking-widest font-bold"
+                      >
+                      Edad
+                      </label>
+                      <input
+                      id="edad"
+                      type="number"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      placeholder="25"
+                      className="w-full bg-black/30 border border-white/10 text-white p-4 focus:outline-none focus:border-apex-gold/50 transition-colors placeholder:text-white/10 text-[10px] md:text-sm"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label
+                      htmlFor="peso-kg"
+                      className="text-[10px] text-apex-gold uppercase tracking-widest font-bold"
+                      >
+                      Peso (kg)
+                      </label>
+                      <input
+                      id="peso-kg"
+                      type="number"
+                      value={weight}
+                      onChange={(e) => setWeight(e.target.value)}
+                      placeholder="75"
+                      className="w-full bg-black/30 border border-white/10 text-white p-4 focus:outline-none focus:border-apex-gold/50 transition-colors placeholder:text-white/10 text-[10px] md:text-sm"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label
+                      htmlFor="altura-cm"
+                      className="text-[10px] text-apex-gold uppercase tracking-widest font-bold"
+                      >
+                      Altura (cm)
+                      </label>
+                      <input
+                      id="altura-cm"
+                      type="number"
+                      value={height}
+                      onChange={(e) => setHeight(e.target.value)}
+                      placeholder="180"
+                      className="w-full bg-black/30 border border-white/10 text-white p-4 focus:outline-none focus:border-apex-gold/50 transition-colors placeholder:text-white/10 text-[10px] md:text-sm"
+                      />
+                    </div>
+                    </motion.div>
 
                   {/* Input Avanzado: % Grasa */}
-                  <motion.div className="relative" variants={formItemVariants}>
+                  <motion.div variants={formItemVariants}>
                     <InputGroup
                       label="% Grasa Corporal (Opcional)"
                       value={bodyFat}
@@ -322,21 +369,21 @@ export default function TdeeCalculator() {
                       placeholder="Ej. 15"
                       type="number"
                     />
-                    <div className="absolute top-0 right-0 text-[10px] text-apex-gold/70 flex items-center gap-1 mt-1">
+                    <div className="mt-1 text-[10px] text-apex-gold/70 flex items-center gap-1">
                       <Info className="w-3 h-3" /> Activa fórmula Katch-McArdle
                     </div>
                   </motion.div>
 
                   {/* Actividad */}
                   <motion.div className="space-y-2" variants={formItemVariants}>
-                    <label className="text-xs text-apex-gold uppercase tracking-widest font-bold">
+                    <label className="text-[10px] text-apex-gold uppercase tracking-widest font-bold">
                       Nivel de Actividad
                     </label>
                     <div className="relative">
                       <select
                         value={activity}
                         onChange={(e) => setActivity(e.target.value as ActivityLevel)}
-                        className="w-full bg-black/30 border border-white/10 text-white p-4 focus:outline-none focus:border-apex-gold/50 transition-colors appearance-none text-sm"
+                        className="w-full bg-black/70 border border-white/10 text-white p-4 focus:outline-none focus:border-apex-gold/50 transition-colors appearance-none text-[10px] md:text-sm"
                       >
                         <option value="sedentary">Sedentario (Oficina, nada de ejercicio)</option>
                         <option value="light">Ligero (1-3 días/sem o trabajo de pie)</option>
@@ -353,7 +400,7 @@ export default function TdeeCalculator() {
 
                   {/* Objetivo */}
                   <motion.div className="space-y-2" variants={formItemVariants}>
-                    <label className="text-xs text-apex-gold uppercase tracking-widest font-bold">
+                    <label className="text-[10px] md:text-xs text-apex-gold uppercase tracking-widest font-bold">
                       Objetivo Actual
                     </label>
                     <div className="grid grid-cols-3 gap-2">
@@ -363,7 +410,7 @@ export default function TdeeCalculator() {
                           onClick={() => setGoal(g)}
                           whileHover={{ scale: 1.03 }}
                           whileTap={{ scale: 0.97 }}
-                          className={`py-3 text-xs uppercase tracking-wider border transition-all ${
+                          className={`py-3 text-[10px] md:text-xs uppercase tracking-wider border transition-all ${
                             goal === g
                               ? 'border-apex-gold text-apex-gold bg-apex-gold/5'
                               : 'border-white/10 text-apex-gray hover:border-white/30'
@@ -573,7 +620,7 @@ function InputGroup({
 
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-xs text-apex-gold uppercase tracking-widest font-bold">
+      <label htmlFor={id} className="text-[10px] md:text-xs text-apex-gold uppercase tracking-widest font-bold">
         {label}
       </label>
       <input
@@ -582,7 +629,7 @@ function InputGroup({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-black/30 border border-white/10 text-white p-4 focus:outline-none focus:border-apex-gold/50 transition-colors placeholder:text-white/10 text-sm"
+        className="w-full bg-black/30 border border-white/10 text-white p-4 focus:outline-none focus:border-apex-gold/50 transition-colors placeholder:text-white/10 text-[10px] md:text-sm"
       />
     </div>
   );
