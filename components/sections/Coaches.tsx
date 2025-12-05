@@ -1,6 +1,7 @@
 // components/sections/Coaches.tsx
 'use client';
 
+import { useEffect, useRef, useState, MouseEvent } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Dumbbell, HeartPulse, Zap } from 'lucide-react';
@@ -10,35 +11,66 @@ const COACHES = [
     id: 1,
     name: 'Carlos Hernández',
     specialty: 'Fuerza & Recomposición',
-    image: 'https://images.unsplash.com/photo-1696563996353-214a3690bb11?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fGZpdG5lc3MlMjB0cmFpbmVyfGVufDB8fDB8fHww',
-    quote: "Mi objetivo es que entrenes con confianza, no con miedo.",
-    bio: "Ex competidor de powerlifting. 7 años transformando cuerpos priorizando la técnica sobre el ego.",
+    image:
+      'https://images.unsplash.com/photo-1696563996353-214a3690bb11?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fGZpdG5lc3MlMjB0cmFpbmVyfGVufDB8fDB8fHww',
+    quote: 'Mi objetivo es que entrenes con confianza, no con miedo.',
+    bio: 'Ex competidor de powerlifting. 7 años transformando cuerpos priorizando la técnica sobre el ego.',
     skills: ['Hipertrofia', 'Powerlifting', 'Nutrición'],
-    icon: <Dumbbell className="w-4 h-4" />
+    icon: <Dumbbell className="w-4 h-4" />,
   },
   {
     id: 2,
     name: 'Sarah Miller',
     specialty: 'HIIT & Conditioning',
-    image: 'https://images.unsplash.com/photo-1704223523303-a5ed14561b1f?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    quote: "Tu mente se rinde antes que tu cuerpo. Yo entreno tu mente.",
-    bio: "Especialista en alto rendimiento metabólico. Te llevaré a límites que no sabías que tenías.",
+    image:
+      'https://images.unsplash.com/photo-1704223523303-a5ed14561b1f?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    quote: 'Tu mente se rinde antes que tu cuerpo. Yo entreno tu mente.',
+    bio: 'Especialista en alto rendimiento metabólico. Te llevaré a límites que no sabías que tenías.',
     skills: ['Resistencia', 'Sprints', 'Mentalidad'],
-    icon: <Zap className="w-4 h-4" />
+    icon: <Zap className="w-4 h-4" />,
   },
   {
     id: 3,
     name: 'Mateo Varela',
     specialty: 'Movilidad & Funcional',
-    image: 'https://images.unsplash.com/photo-1738523686513-0c27d2be85e6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fHw%3D',
-    quote: "Fuerza sin control es riesgo. Construye un cuerpo para toda la vida.",
-    bio: "Kinesiólogo deportivo. Enfocado en longevidad, postura y fuerza funcional libre de dolor.",
+    image:
+      'https://images.unsplash.com/photo-1738523686513-0c27d2be85e6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fHw%3D',
+    quote: 'Fuerza sin control es riesgo. Construye un cuerpo para toda la vida.',
+    bio: 'Kinesiólogo deportivo. Enfocado en longevidad, postura y fuerza funcional libre de dolor.',
     skills: ['Movilidad', 'Kettlebells', 'Recovery'],
-    icon: <HeartPulse className="w-4 h-4" />
-  }
+    icon: <HeartPulse className="w-4 h-4" />,
+  },
 ];
 
-// Variantes de animación consistentes con otras secciones
+// Hook de reveal (como en otras secciones)
+function useReveal(threshold = 0.5) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio >= threshold) {
+            setVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, visible };
+}
+
+// Variantes de animación
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -63,12 +95,27 @@ const cardVariants = {
 };
 
 export default function Coaches() {
+  const [activeCoachId, setActiveCoachId] = useState<number | null>(null);
+
+  const handleToggle = (id: number) => {
+    setActiveCoachId((prev) => (prev === id ? null : id));
+
+  };
+
+  const handleCloseAll = () => setActiveCoachId(null);
+
+  
   return (
-    <section id="coaches" className="py-32 bg-apex-bg relative border-t border-white/5 overflow-hidden">
+    <section
+      id="coaches"
+      className="py-32 bg-apex-bg relative border-t border-white/5 overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-6">
-        
+       
+    
+
         {/* Header de Sección */}
-        <motion.div 
+        <motion.div
           className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -81,101 +128,218 @@ export default function Coaches() {
             </span>
             <h2 className="text-4xl md:text-6xl font-light text-white uppercase leading-none">
               Mentores de tu <br />
-              <span className="text-apex-gold font-serif italic normal-case">Evolución</span>
+              <span className="text-apex-gold font-serif italic normal-case">
+                Evolución
+              </span>
             </h2>
           </div>
           <div className="max-w-xs">
             <p className="text-apex-gray text-sm font-light leading-relaxed">
-              Cada entrenador tiene un enfoque distinto; encuentra al experto que conecta con tu visión.
+              Cada entrenador tiene un enfoque distinto; encuentra al experto que
+              conecta con tu visión.
             </p>
           </div>
         </motion.div>
 
+        {/* Overlay para cerrar al tocar fuera (solo mobile) */}
+        
+
         {/* Grid de Coaches */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 relative"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={containerVariants}
         >
           {COACHES.map((coach) => (
-            <motion.div 
+            <CoachCard
               key={coach.id}
-              className="group relative h-[500px] md:h-[600px] w-full overflow-hidden bg-apex-surface cursor-pointer"
-              variants={cardVariants}
-            >
-              {/* IMAGEN DE FONDO (B&W to Color) */}
-              <Image
-                src={coach.image}
-                alt={coach.name}
-                fill
-                className="object-cover transition-all duration-700 ease-out grayscale group-hover:grayscale-0 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-              
-              {/* Overlay Gradiente */}
-              <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
-
-              {/* CONTENIDO */}
-              <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
-                
-                {/* Parte Superior: Siempre visible */}
-                <div className="transform transition-transform duration-500 group-hover:-translate-y-4">
-                  <div className="flex items-center gap-2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                    <span className="p-1.5 rounded-full bg-apex-gold/20 text-apex-gold border border-apex-gold/30">
-                      {coach.icon}
-                    </span>
-                    <span className="text-[10px] uppercase tracking-widest text-apex-gold font-bold">
-                      Head Coach
-                    </span>
-                  </div>
-                  
-                  <h3 className="text-2xl md:text-3xl font-serif italic text-white mb-1">
-                    {coach.name}
-                  </h3>
-                  <p className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/60 group-hover:text-white transition-colors">
-                    {coach.specialty}
-                  </p>
-                </div>
-
-                {/* Parte Inferior: Reveal en Hover */}
-                <div className="overflow-hidden max-h-0 opacity-0 group-hover:max-h-[300px] group-hover:opacity-100 transition-all duration-700 ease-out">
-                  <div className="pt-6 space-y-4 md:space-y-6 border-t border-white/20 mt-4">
-                    
-                    {/* Frase / Quote */}
-                    <p className="text-base md:text-lg text-white font-light leading-snug italic">
-                      &quot;{coach.quote}&quot;
-                    </p>
-
-                    {/* Bio */}
-                    <p className="text-xs md:text-sm text-apex-gray font-light line-clamp-3">
-                      {coach.bio}
-                    </p>
-
-                    {/* Skills Tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {coach.skills.map(skill => (
-                        <span key={skill} className="px-2 md:px-3 py-1 text-[10px] uppercase tracking-wider border border-white/10 text-white/80 rounded-full">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* CTA Button */}
-                    <button className="w-full py-3 md:py-4 bg-white text-apex-bg text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-apex-gold transition-colors flex items-center justify-center gap-2 group/btn">
-                      Entrenar con {coach.name.split(' ')[0]}
-                      <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-            </motion.div>
+              coach={coach}
+              isActive={activeCoachId === coach.id}
+              onToggle={() => handleToggle(coach.id)}
+              onUiHover={() => {}}
+            />
           ))}
         </motion.div>
-
       </div>
     </section>
+  );
+}
+
+type Coach = (typeof COACHES)[number];
+
+function CoachCard({
+  coach,
+  isActive,
+  onToggle,
+  onUiHover,
+}: {
+  coach: Coach;
+  isActive: boolean;
+  onToggle: () => void;
+  onUiHover: () => void;
+}) {
+  const { ref, visible } = useReveal(0.6);
+  const [parallax, setParallax] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    // Solo desktop
+    if (window.innerWidth < 768) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+    const x = (offsetX / rect.width - 0.5) * 10; // máx ~5px a cada lado
+    const y = (offsetY / rect.height - 0.5) * 10;
+
+    setParallax({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setParallax({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={cardVariants}
+      onClick={onToggle} // mobile: tap para abrir/cerrar descripción
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => {
+        // sfx solo en desktop
+        if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+          onUiHover();
+        }
+      }}
+      className={[
+        'group relative h-[500px] md:h-[600px] w-full overflow-hidden cursor-pointer',
+        // Marco base + borde animado dorado en hover
+        'rounded-3xl border border-white/10 bg-apex-surface/80',
+        'transition-all duration-300',
+        'md:hover:-translate-y-1 md:hover:border-apex-gold/40 md:hover:shadow-[0_0_40px_rgba(255,215,128,0.25)]',
+        isActive ? 'z-20 md:z-0' : 'z-0',
+      ].join(' ')}
+    >
+      {/* Capa de fondo de imagen con parallax suave */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div
+          className="h-full w-full transition-transform duration-200 will-change-transform"
+          style={{
+            transform: `translate3d(${parallax.x}px, ${parallax.y}px, 0)`,
+          }}
+        >
+          <Image
+            src={coach.image}
+            alt={coach.name}
+            fill
+            className={[
+              'object-cover transition-all duration-700 ease-out',
+              // Mobile: reveal por scroll (gris -> color + ligero zoom)
+              visible ? 'grayscale-0 scale-105' : 'grayscale scale-100',
+              // Desktop: hover manda
+              'md:scale-100 md:grayscale md:group-hover:grayscale-0 md:group-hover:scale-105',
+            ].join(' ')}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
+
+        {/* Overlay gradiente para contraste */}
+        <div
+          className={[
+            'absolute inset-0 bg-linear-to-t from-black/85 via-black/55 to-transparent transition-opacity duration-500',
+            isActive ? 'opacity-100' : 'opacity-90',
+            'md:opacity-90 md:group-hover:opacity-95',
+          ].join(' ')}
+        />
+      </div>
+
+      {/* CONTENIDO */}
+      <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+        {/* Header: nombre + rol + hint mobile */}
+        <div
+          className={[
+            'relative transition-transform duration-500',
+            isActive ? '-translate-y-3' : 'translate-y-0',
+            'md:group-hover:-translate-y-4',
+          ].join(' ')}
+        >
+          <div className="flex items-center gap-2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+            <span className="p-1.5 rounded-full bg-apex-gold/20 text-apex-gold border border-apex-gold/30">
+              {coach.icon}
+            </span>
+            <span className="text-[10px] uppercase tracking-widest text-apex-gold font-bold">
+              Head Coach
+            </span>
+          </div>
+
+          <h3 className="text-2xl md:text-3xl font-serif italic text-white mb-1">
+            {coach.name}
+          </h3>
+          <p className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/60 group-hover:text-white transition-colors">
+            {coach.specialty}
+          </p>
+
+          {/* Hint solo en mobile */}
+          <p className="mt-2 text-[11px] text-white/65 flex items-center gap-1 md:hidden">
+            Toca para ver detalles
+            <ArrowUpRight className="w-3 h-3" />
+          </p>
+        </div>
+
+        {/* PANEL DESLIZANTE: descripción */}
+        <div
+          className={[
+            'absolute inset-x-4 md:inset-x-5 bottom-4 md:bottom-6',
+            'transition-all duration-500 ease-out',
+            // Mobile
+            isActive
+              ? 'translate-y-0 opacity-100 max-h-[340px] pointer-events-auto'
+              : 'translate-y-4 opacity-0 max-h-0 pointer-events-none',
+            // Desktop: solo hover manda
+            'md:translate-y-4 md:opacity-0 md:max-h-0 md:pointer-events-none md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-hover:max-h-[280px] md:group-hover:pointer-events-auto',
+          ].join(' ')}
+        >
+          <div className="bg-apex-bg/95 border border-white/10 rounded-2xl p-4 md:p-5 shadow-xl">
+            {/* Frase / Quote */}
+            <p className="text-sm md:text-base text-white font-light leading-snug italic mb-3 md:mb-4">
+              &quot;{coach.quote}&quot;
+            </p>
+
+            {/* Bio */}
+            <p className="text-[11px] md:text-sm text-apex-gray font-light leading-relaxed mb-3 md:mb-4">
+              {coach.bio}
+            </p>
+
+            {/* Skills Tags con micro-interacción + pseudo-stagger */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {coach.skills.map((skill, idx) => (
+                <span
+                  key={skill}
+                  className="px-2 md:px-3 py-1 text-[10px] uppercase tracking-[0.16em] border border-white/10 text-white/80 rounded-full transition-all duration-300 hover:border-apex-gold/40 hover:bg-apex-gold/10 hover:text-white"
+                  style={{
+                    transitionDelay: `${idx * 70}ms`,
+                  }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+
+            {/* CTA Button con lift + glow + icon shift */}
+            <button
+              className="w-full py-3 md:py-3.5 bg-white text-apex-bg text-[10px] md:text-xs font-bold uppercase tracking-[0.22em] rounded-full flex items-center justify-center gap-2 group/btn transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.45)] hover:shadow-[0_16px_45px_rgba(255,215,128,0.35)] hover:bg-apex-gold hover:-translate-y-0.5"
+              onClick={(e) => {
+                e.stopPropagation(); // que el botón no toggle la card
+              }}
+            >
+              Entrenar con {coach.name.split(' ')[0]}
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }
