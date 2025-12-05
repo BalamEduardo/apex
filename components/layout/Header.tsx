@@ -108,14 +108,14 @@ export default function Header() {
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <Link
               href="/"
-              className="group flex items-center gap-3 text-2xl font-bold tracking-widest-xl text-white hover:text-apex-gold transition-colors duration-300 ease-smooth"
+              className="group flex items-center gap-3 text-2xl font-bold tracking-widest-xl text-white hover:text-apex-gold transition-colors duration-300 ease-smooth font-sans"
             >
               {/* Logo simbolo: diamante (square rotado) con punto central */}
               <span className="relative inline-flex w-5 h-5 items-center justify-center">
-                <span className="block w-5 h-5 border border-white/90 rotate-45 transition-all duration-700 ease-smooth group-hover:border-apex-gold group-hover:rotate-135deg"></span>
+                <span className="block w-5 h-5 border border-white/90 rotate-45 transition-all duration-700 ease-smooth group-hover:border-apex-gold group-hover:rotate-[135deg]"></span>
                 <span className="absolute w-1.5 h-1.5 bg-white rounded-full transition-colors duration-700 ease-smooth group-hover:bg-apex-gold"></span>
               </span>
-              <span>APEX</span>
+              <span style={{ color: 'inherit', fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>APEX</span>
             </Link>
           </div>
 

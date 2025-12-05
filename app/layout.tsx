@@ -27,13 +27,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html 
+      lang="es" 
+      className={inter.variable}
+      style={{ 
+        backgroundColor: '#000000', 
+        color: '#ffffff',
+      }}
+    >
       <body
         // 3. Inyección de variables y clases base
-        // ${inter.variable} -> Hace disponible la fuente para Tailwind
         // font-sans -> Aplica la fuente inmediatamente (evita FOUT)
         // antialiased -> Suavizado de fuentes para estética premium
-        className={`${inter.variable} font-sans antialiased bg-apex-bg text-white`}
+        className="font-sans antialiased bg-apex-bg text-white"
+        style={{
+          fontFamily: 'var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          backgroundColor: '#000000',
+          color: '#ffffff',
+        }}
       >
         <ScrollRestoration />
         <Header />
