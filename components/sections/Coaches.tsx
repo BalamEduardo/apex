@@ -1,7 +1,7 @@
 // components/sections/Coaches.tsx
 'use client';
 
-import { useEffect, useRef, useState, MouseEvent } from 'react';
+import { useState, MouseEvent } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Dumbbell, HeartPulse, Zap } from 'lucide-react';
@@ -42,34 +42,6 @@ const COACHES = [
   },
 ];
 
-// Hook de reveal (como en otras secciones)
-function useReveal(threshold = 0.5) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.intersectionRatio >= threshold) {
-            setVisible(true);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold }
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, visible };
-}
-
 // Variantes de animación
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -99,21 +71,14 @@ export default function Coaches() {
 
   const handleToggle = (id: number) => {
     setActiveCoachId((prev) => (prev === id ? null : id));
-
   };
 
-  const handleCloseAll = () => setActiveCoachId(null);
-
-  
   return (
     <section
       id="coaches"
       className="py-32 bg-apex-bg relative border-t border-white/5 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6">
-       
-    
-
         {/* Header de Sección */}
         <motion.div
           className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8"
@@ -141,15 +106,12 @@ export default function Coaches() {
           </div>
         </motion.div>
 
-        {/* Overlay para cerrar al tocar fuera (solo mobile) */}
-        
-
         {/* Grid de Coaches */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-6 relative"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.2 }}
           variants={containerVariants}
         >
           {COACHES.map((coach) => (
@@ -158,7 +120,6 @@ export default function Coaches() {
               coach={coach}
               isActive={activeCoachId === coach.id}
               onToggle={() => handleToggle(coach.id)}
-              onUiHover={() => {}}
             />
           ))}
         </motion.div>
@@ -173,24 +134,20 @@ function CoachCard({
   coach,
   isActive,
   onToggle,
-  onUiHover,
 }: {
   coach: Coach;
   isActive: boolean;
   onToggle: () => void;
-  onUiHover: () => void;
 }) {
-  const { ref, visible } = useReveal(0.6);
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    // Solo desktop
-    if (window.innerWidth < 768) return;
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
-    const x = (offsetX / rect.width - 0.5) * 10; // máx ~5px a cada lado
+    const x = (offsetX / rect.width - 0.5) * 10;
     const y = (offsetY / rect.height - 0.5) * 10;
 
     setParallax({ x, y });
@@ -202,24 +159,16 @@ function CoachCard({
 
   return (
     <motion.div
-      ref={ref}
       variants={cardVariants}
-      onClick={onToggle} // mobile: tap para abrir/cerrar descripción
+      onClick={onToggle} // mobile
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      onMouseEnter={() => {
-        // sfx solo en desktop
-        if (typeof window !== 'undefined' && window.innerWidth >= 768) {
-          onUiHover();
-        }
-      }}
       className={[
         'group relative h-[500px] md:h-[600px] w-full overflow-hidden cursor-pointer',
-        // Marco base + borde animado dorado en hover
         'rounded-3xl border border-white/10 bg-apex-surface/80',
         'transition-all duration-300',
         'md:hover:-translate-y-1 md:hover:border-apex-gold/40 md:hover:shadow-[0_0_40px_rgba(255,215,128,0.25)]',
-        isActive ? 'z-20 md:z-0' : 'z-0',
+        isActive ? 'z-10 md:z-0' : 'z-0',
       ].join(' ')}
     >
       {/* Capa de fondo de imagen con parallax suave */}
@@ -236,9 +185,9 @@ function CoachCard({
             fill
             className={[
               'object-cover transition-all duration-700 ease-out',
-              // Mobile: reveal por scroll (gris -> color + ligero zoom)
-              visible ? 'grayscale-0 scale-105' : 'grayscale scale-100',
-              // Desktop: hover manda
+              // Mobile: ya directo en color (más simple y fluido)
+              'grayscale-0 scale-105',
+              // Desktop: gris → color en hover
               'md:scale-100 md:grayscale md:group-hover:grayscale-0 md:group-hover:scale-105',
             ].join(' ')}
             sizes="(max-width: 768px) 100vw, 33vw"
@@ -248,7 +197,7 @@ function CoachCard({
         {/* Overlay gradiente para contraste */}
         <div
           className={[
-            'absolute inset-0 bg-linear-to-t from-black/85 via-black/55 to-transparent transition-opacity duration-500',
+            'absolute inset-0 bg-linear-to-t from-black/85 via-black/55 to-transparent transition-opacity duration-300',
             isActive ? 'opacity-100' : 'opacity-90',
             'md:opacity-90 md:group-hover:opacity-95',
           ].join(' ')}
@@ -260,12 +209,12 @@ function CoachCard({
         {/* Header: nombre + rol + hint mobile */}
         <div
           className={[
-            'relative transition-transform duration-500',
+            'relative transition-transform duration-300',
             isActive ? '-translate-y-3' : 'translate-y-0',
             'md:group-hover:-translate-y-4',
           ].join(' ')}
         >
-          <div className="flex items-center gap-2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+          <div className="flex items-center gap-2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
             <span className="p-1.5 rounded-full bg-apex-gold/20 text-apex-gold border border-apex-gold/30">
               {coach.icon}
             </span>
@@ -292,13 +241,13 @@ function CoachCard({
         <div
           className={[
             'absolute inset-x-4 md:inset-x-5 bottom-4 md:bottom-6',
-            'transition-all duration-500 ease-out',
-            // Mobile
+            'transition-all duration-300 ease-out',
+            // Mobile: solo opacity + translate (sin max-height)
             isActive
-              ? 'translate-y-0 opacity-100 max-h-[340px] pointer-events-auto'
-              : 'translate-y-4 opacity-0 max-h-0 pointer-events-none',
-            // Desktop: solo hover manda
-            'md:translate-y-4 md:opacity-0 md:max-h-0 md:pointer-events-none md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-hover:max-h-[280px] md:group-hover:pointer-events-auto',
+              ? 'translate-y-0 opacity-100 pointer-events-auto'
+              : 'translate-y-4 opacity-0 pointer-events-none',
+            // Desktop: hover manda, el estado mobile no afecta
+            'md:translate-y-4 md:opacity-0 md:pointer-events-none md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-hover:pointer-events-auto',
           ].join(' ')}
         >
           <div className="bg-apex-bg/95 border border-white/10 rounded-2xl p-4 md:p-5 shadow-xl">
@@ -312,14 +261,14 @@ function CoachCard({
               {coach.bio}
             </p>
 
-            {/* Skills Tags con micro-interacción + pseudo-stagger */}
+            {/* Skills Tags */}
             <div className="flex flex-wrap gap-2 mb-4">
               {coach.skills.map((skill, idx) => (
                 <span
                   key={skill}
                   className="px-2 md:px-3 py-1 text-[10px] uppercase tracking-[0.16em] border border-white/10 text-white/80 rounded-full transition-all duration-300 hover:border-apex-gold/40 hover:bg-apex-gold/10 hover:text-white"
                   style={{
-                    transitionDelay: `${idx * 70}ms`,
+                    transitionDelay: `${idx * 60}ms`,
                   }}
                 >
                   {skill}
@@ -327,11 +276,11 @@ function CoachCard({
               ))}
             </div>
 
-            {/* CTA Button con lift + glow + icon shift */}
+            {/* CTA Button */}
             <button
               className="w-full py-3 md:py-3.5 bg-white text-apex-bg text-[10px] md:text-xs font-bold uppercase tracking-[0.22em] rounded-full flex items-center justify-center gap-2 group/btn transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.45)] hover:shadow-[0_16px_45px_rgba(255,215,128,0.35)] hover:bg-apex-gold hover:-translate-y-0.5"
               onClick={(e) => {
-                e.stopPropagation(); // que el botón no toggle la card
+                e.stopPropagation();
               }}
             >
               Entrenar con {coach.name.split(' ')[0]}
