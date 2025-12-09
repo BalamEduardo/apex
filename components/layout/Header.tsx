@@ -83,8 +83,8 @@ export default function Header() {
 
   const menuItems = [
     { label: 'INICIO', href: '/#hero', description: 'Bienvenida' },
-    { label: 'FILOSOFÍA', href: '/#filosofia', description: 'Nuestra esencia' },
-    { label: 'ESPACIOS', href: '/#gallery', description: 'Galería & zonas' },
+    { label: 'EXPERIENCIA', href: '/#experiencia', description: 'Filosofía · Espacio · Clases' },
+    { label: 'COACHES', href: '/#coaches', description: 'Nuestro equipo' },
     { label: 'TESTIMONIOS', href: '/#testimonios', description: 'Lo que dicen' },
     { label: 'MEMBRESÍAS', href: '/#membresias', description: 'Planes exclusivos' },
     { label: 'CONTACTO', href: '/#contacto', description: 'Agenda tu visita' },
@@ -115,7 +115,7 @@ export default function Header() {
                 <span className="block w-5 h-5 border border-white/90 rotate-45 transition-all duration-700 ease-smooth group-hover:border-apex-gold group-hover:rotate-135deg"></span>
                 <span className="absolute w-1.5 h-1.5 bg-white rounded-full transition-colors duration-700 ease-smooth group-hover:bg-apex-gold"></span>
               </span>
-              <span style={{ color: 'inherit', fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>APEX</span>
+              <span className="tracking-widest-xl">APEX</span>
             </Link>
           </div>
 

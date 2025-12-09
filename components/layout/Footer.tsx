@@ -150,7 +150,7 @@ export default function Footer() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="hover:text-apex-gold transition-colors"
             >
-              Back to top
+              Volver arriba
             </button>
           </div>
         </div>

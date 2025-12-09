@@ -89,9 +89,9 @@ export default function Coaches() {
             <span className="text-apex-gold text-xs font-light tracking-widest-xl uppercase mb-4 block">
               Equipo Élite
             </span>
-            <h2 className="text-4xl md:text-6xl font-light text-white uppercase leading-none">
+            <h2 className="text-4xl md:text-6xl font-light text-white uppercase leading-tight">
               Mentores de tu <br />
-              <span className="text-apex-gold font-serif italic normal-case">
+              <span className="text-apex-gold font-serif italic uppercase">
                 Evolución
               </span>
             </h2>
@@ -161,6 +161,9 @@ function CoachCard({
       onClick={onToggle} // mobile
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      aria-expanded={isActive}
+      role='button'
+      tabIndex={0}
       className={[
         'group relative h-[500px] md:h-[600px] w-full overflow-hidden cursor-pointer',
         'rounded-3xl border border-white/10 bg-apex-surface/80',

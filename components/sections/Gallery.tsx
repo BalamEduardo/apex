@@ -1,37 +1,9 @@
-'use client';
+ 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useReveal } from '../hooks/useReveal';
 import Image from 'next/image';
 
-// Hook para el reveal por scroll
-function useReveal(threshold = 0.5) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.intersectionRatio >= threshold) {
-            setVisible(true);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold }
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, visible };
-}
-
-// Datos de las zonas
+// Datos de las zonas (solo datos, la UI de clases se movió a Classes.tsx)
 const zones = [
   {
     id: 'strength',
@@ -88,9 +60,7 @@ function ZoneSection({ zone, index }: { zone: (typeof zones)[0]; index: number }
     <section
       id={zone.id}
       aria-labelledby={`${zone.id}-title`}
-      className={`flex flex-col ${
-        isLeft ? 'md:flex-row' : 'md:flex-row-reverse'
-      } border-b border-white/5`}
+      className={`flex flex-col ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse' } border-b border-white/5`}
     >
       {/* Columna texto */}
       <div

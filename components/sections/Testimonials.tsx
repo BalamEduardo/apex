@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Quote } from 'lucide-react';
 
 type Testimonial = {
-  roleLabel: string;
+ 
   name: string;
   title: string;
   quote: string;
@@ -13,42 +13,42 @@ type Testimonial = {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    roleLabel: 'El Ejecutivo',
+
     name: 'Carlos M.',
     title: 'Director de Estrategia',
     quote:
       'El único lugar donde el caos de la ciudad desaparece. Diseño impecable y enfoque total. Es mi santuario diario.',
   },
   {
-    roleLabel: 'El Atleta',
+  
     name: 'Ana R.',
     title: 'Competidora de Cross Training',
     quote:
       'No es solo estética. El equipamiento biomecánico está a otro nivel. Aquí se entrena de verdad, sin distracciones.',
   },
   {
-    roleLabel: 'El Esteta',
+ 
     name: 'Julián P.',
     title: 'Arquitecto & Diseñador',
     quote:
       'Más que un gimnasio, es un ritual. La atmósfera te obliga a dar tu mejor versión. Cada detalle arquitectónico inspira.',
   },
   {
-    roleLabel: 'La Visionaria',
+
     name: 'Elena S.',
     title: 'CEO Tech Startup',
     quote:
       'La claridad mental que consigo aquí es invaluable. Un espacio donde la excelencia física alimenta la excelencia profesional.',
   },
   {
-    roleLabel: 'El Innovador',
+
     name: 'Ricardo T.',
     title: 'Fundador de StartUp',
     quote:
       'APEX no es un lugar para atajos. Es un espacio donde la disciplina y el diseño se encuentran para crear resultados extraordinarios.',
   },
   {
-    roleLabel: 'La Profesional',
+ 
     name: 'Daniela V.',
     title: 'Médico Cirujano',
     quote:
@@ -85,7 +85,7 @@ export default function Testimonials() {
             </p>
           </div>
 
-          <h2 className="text-3xl text-white font-light tracking-tight leading-[1.1]">
+          <h2 className="text-4xl text-white font-light tracking-tight leading-[1.1]">
             LO QUE DICEN{' '}
             <span className="block mt-2 font-serif italic text-apex-gold">
               DE NOSOTROS
@@ -99,7 +99,7 @@ export default function Testimonials() {
         </div>
 
         {/* Carrusel horizontal nativo */}
-        <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory">
+        <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory no-scrollbar">
           {TESTIMONIALS.map((testimonial, index) => (
             <div
               key={index}
@@ -139,12 +139,7 @@ export default function Testimonials() {
         style={{ height: '300vh' }}
       >
         <div className="sticky top-0 h-screen overflow-hidden">
-          {/* Fondo decorativo */}
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute left-[-10%] top-[20%] h-[400px] w-[400px] rounded-full bg-apex-gold/5 blur-[120px]" />
-            <div className="absolute right-[-10%] bottom-[20%] h-[350px] w-[350px] rounded-full bg-white/3 blur-[110px]" />
-          </div>
-
+         
           {/* Grid principal */}
           <div className="relative flex h-full items-center">
             {/* Columna Izquierda */}

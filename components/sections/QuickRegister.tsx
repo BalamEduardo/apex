@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
 
 // Variantes de animación
+const apexEase = [0.16, 1, 0.3, 1] as const;
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -29,7 +31,7 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.16, 1, 0.3, 1] as const,
+      ease: apexEase,
     },
   },
 };
@@ -41,7 +43,7 @@ const successVariants = {
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: [0.16, 1, 0.3, 1] as const,
+      ease: apexEase,
     },
   },
 };
@@ -94,10 +96,12 @@ export default function QuickRegister() {
   return (
     <section 
       id="contacto"
+      aria-labelledby="contacto-heading"
       className="py-24 bg-apex-bg relative flex justify-center items-center overflow-hidden border-t border-white/5"
     >
       {/* Decoración de fondo animada */}
       <motion.div 
+        aria-hidden="true"
         className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent opacity-50 pointer-events-none"
         initial={{ scale: 0.8, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 0.5 }}
@@ -116,6 +120,8 @@ export default function QuickRegister() {
               initial="hidden"
               animate="visible"
               exit="exit"
+              role="status"
+              aria-live="polite"
             >
               <motion.div 
                 className="w-16 h-16 rounded-full bg-apex-gold/10 flex items-center justify-center text-apex-gold mb-2"
@@ -125,6 +131,7 @@ export default function QuickRegister() {
               </motion.div>
               
               <motion.h3 
+                id="contacto-heading"
                 className="text-2xl font-serif italic text-white"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -183,6 +190,7 @@ export default function QuickRegister() {
                 onSubmit={handleSubmit} 
                 className="relative group"
                 variants={itemVariants}
+                aria-describedby={error ? 'quick-phone-error' : undefined}
               >
                 <label htmlFor="quick-phone" className="sr-only">
                   Número de celular
@@ -202,6 +210,8 @@ export default function QuickRegister() {
                     ${error ? 'border-red-500 focus:border-red-500' : 'border-white/20 focus:border-apex-gold'}
                   `}
                   whileFocus={{ scale: 1.01 }}
+                  aria-invalid={!!error}
+                  aria-describedby={error ? 'quick-phone-error' : undefined}
                 />
                 
                 <motion.button
@@ -222,6 +232,8 @@ export default function QuickRegister() {
               <AnimatePresence>
                 {error && (
                   <motion.p 
+                    id="quick-phone-error"
+                    role="alert"
                     className="mt-2 text-[11px] text-red-400 text-left"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}

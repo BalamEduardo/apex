@@ -58,7 +58,7 @@ function useReveal(threshold = 0.5) {
 
 export default function Philosophy() {
   return (
-    <section className="bg-apex-bg py-24 px-6 md:px-12 lg:px-20 overflow-hidden">
+    <section id="Filosofia" className="bg-apex-bg py-24 px-6 md:px-12 lg:px-20 overflow-hidden">
       {/* Header dentro del contenedor */}
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start mb-32 gap-10">
@@ -74,9 +74,12 @@ export default function Philosophy() {
               tu percepción de un gimnasio creando un santuario donde el lujo
               se encuentra con la experiencia.
             </p>
-            <button className="flex items-center gap-2 text-apex-gold text-sm font-bold tracking-widest hover:gap-4 transition-all duration-300 uppercase">
+            <a
+              href="#sobre-nosotros"
+              className="inline-flex items-center gap-2 text-apex-gold text-sm font-bold tracking-widest hover:gap-4 transition-all duration-300 uppercase"
+            >
               Conoce más sobre nosotros <ArrowRight className="w-4 h-4" />
-            </button>
+            </a>
           </div>
         </div>
       </div>

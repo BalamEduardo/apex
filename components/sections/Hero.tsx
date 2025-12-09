@@ -3,9 +3,10 @@ import { ArrowRight } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section id='hero' className="relative h-screen w-full overflow-hidden">
       {/* 1. Capa Video Background */}
       <video
+        aria-hidden="true"
         autoPlay
         loop
         muted
