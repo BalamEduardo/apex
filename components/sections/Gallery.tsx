@@ -65,14 +65,14 @@ function ZoneSection({ zone, index }: { zone: (typeof zones)[0]; index: number }
       {/* Columna texto */}
       <div
         className={`
-        w-full md:w-[30%] h-auto md:h-screen 
+        w-full md:w-[40%] h-auto md:h-screen 
         md:sticky md:top-0 z-20 
         flex flex-col justify-center px-8 md:px-16 
         bg-apex-bg 
         ${isLeft ? 'md:border-r' : 'md:border-l'} border-white/5
       `}
       >
-        <div className="relative animate-fade-in-up py-4 md:py-0">
+        <div className="relative animate-fade-in-up py-12 md:py-0">
           <div className="w-12 h-0.5 bg-apex-gold mb-4 md:mb-8" />
 
           <h2

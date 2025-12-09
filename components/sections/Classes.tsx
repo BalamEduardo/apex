@@ -40,6 +40,7 @@ const signatureClasses = [
 
 const apexEase = [0.16, 1, 0.3, 1] as const;
 
+// Sección completa
 const sectionVariants = {
   hidden: { opacity: 0, y: 24 },
   visible: {
@@ -54,31 +55,45 @@ const sectionVariants = {
   },
 };
 
+// Rail (lista de clases)
+const railVariants = {
+  hidden: { opacity: 0, x: -32 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, ease: apexEase },
+  },
+};
+
+// Contenedor del hero
+const panelVariants = {
+  hidden: { opacity: 0, x: 32 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, ease: apexEase, delay: 0.05 },
+  },
+};
+
+// Cambio entre clases activas (dentro del hero)
 const heroVariants = {
-  hidden: { opacity: 0, y: 16, scale: 0.99 },
+  hidden: { opacity: 0, y: 12, scale: 0.99 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: {
-      duration: 0.5,
-      ease: apexEase,
-    },
+    transition: { duration: 0.35, ease: apexEase },
   },
   exit: {
     opacity: 0,
-    y: -16,
+    y: -12,
     scale: 0.99,
-    transition: {
-      duration: 0.25,
-      ease: apexEase,
-    },
+    transition: { duration: 0.25, ease: apexEase },
   },
 };
 
 export default function SignatureClassesSection() {
   const [activeId, setActiveId] = useState<string>(signatureClasses[0]?.id);
-
   const activeClass =
     signatureClasses.find((c) => c.id === activeId) ?? signatureClasses[0];
 
@@ -86,28 +101,31 @@ export default function SignatureClassesSection() {
     <section
       id="clases"
       aria-labelledby="clases-title"
-      className="border-t border-white/5 bg-apex-bg py-16 md:py-24 px-8 md:px-16"
+      className="border-t border-white/5 bg-apex-bg py-20 md:py-28 px-8 md:px-16"
     >
       <motion.div
-        className="max-w-7xl mx-auto"
+        className="max-w-6xl mx-auto"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
       >
         {/* Encabezado */}
-        <motion.div className="text-center mb-14 md:mb-16" variants={sectionVariants}>
+        <motion.div
+          className="text-center mb-14 md:mb-16"
+          variants={sectionVariants}
+        >
           <div className="w-12 h-0.5 bg-apex-gold mx-auto mb-6" />
 
           <h2
             id="clases-title"
-            className="text-4xl md:text-6xl lg:text-7xl font-light text-white mb-4 leading-none uppercase tracking-tighter"
+            className="text-3xl md:text-5xl lg:text-6xl font-light text-white mb-3 leading-none uppercase tracking-tighter"
           >
             Clases
         
           </h2>
 
-          <div className="flex items-center justify-center space-x-3 text-xs md:text-sm text-apex-gray/80 font-mono tracking-widest uppercase">
+          <div className="flex items-center justify-center space-x-3 text-[11px] md:text-xs text-apex-gray/80 font-mono tracking-widest uppercase">
             <span>Box</span>
             <span className="text-apex-gold">·</span>
             <span>CrossFit</span>
@@ -116,10 +134,13 @@ export default function SignatureClassesSection() {
           </div>
         </motion.div>
 
-        {/* Layout: rail + hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)] gap-10 lg:gap-12 items-start">
+        {/* Layout: rail + hero más compacto */}
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)] gap-10 lg:gap-14 items-start">
           {/* Rail de clases (selector) */}
-          <div className="lg:sticky lg:top-28 space-y-5">
+          <motion.div
+            className="lg:sticky lg:top-28 space-y-6"
+            variants={railVariants}
+          >
             <p className="text-apex-gray text-[11px] md:text-xs font-light uppercase tracking-widest mb-1">
               Selecciona una sala
             </p>
@@ -127,7 +148,7 @@ export default function SignatureClassesSection() {
             <ul
               role="tablist"
               aria-label="Clases Signature APEX"
-              className="space-y-2.5"
+              className="space-y-2"
             >
               {signatureClasses.map((clase, index) => {
                 const isActive = clase.id === activeId;
@@ -142,11 +163,11 @@ export default function SignatureClassesSection() {
                       className={`
                         w-full flex items-center justify-between gap-4 
                         border-l-2 px-4 py-3
-                        transition-all duration-250 text-left
+                        transition-all duration-300 text-left
                         ${
                           isActive
                             ? 'border-apex-gold bg-apex-surface/60'
-                            : 'border-white/10 hover:border-apex-gold/60 hover:bg-apex-surface/40'
+                            : 'border-white/10 hover:border-apex-gold/60 hover:bg-apex-surface/30'
                         }
                       `}
                     >
@@ -156,8 +177,12 @@ export default function SignatureClassesSection() {
                         </span>
                         <span
                           className={`
-                            text-sm md:text-[13px] uppercase tracking-widest 
-                            ${isActive ? 'text-white' : 'text-apex-gray'}
+                            text-xs md:text-sm uppercase tracking-widest 
+                            ${
+                              isActive
+                                ? 'text-white'
+                                : 'text-apex-gray'
+                            }
                           `}
                         >
                           {clase.name}
@@ -174,38 +199,35 @@ export default function SignatureClassesSection() {
             </ul>
 
             <p className="text-[10px] text-apex-gray/70 font-mono uppercase tracking-widest max-w-xs">
-              Coreografiado para el alto rendimiento. Luz, sonido y ritmo diseñados
-              para que cada minuto cuente.
+              Coreografiado para el alto rendimiento. Luz, sonido y ritmo
+              diseñados para que cada minuto cuente.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Hero de clase activa (más compacto) */}
-          <div
+          {/* Hero de clase activa (más pequeño / compacto) */}
+          <motion.div
             role="tabpanel"
             id={`clase-panel-${activeClass.id}`}
             aria-labelledby={activeClass.id}
+            className="max-w-3xl lg:max-w-4xl ml-auto"
+            variants={panelVariants}
           >
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" initial={false}>
               <motion.article
                 key={activeClass.id}
                 variants={heroVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="
-                  relative bg-apex-surface/40 border border-white/10 
-                  rounded-xl overflow-hidden 
-                  shadow-2xl shadow-black/40
-                  max-w-2xl lg:max-w-none
-                "
+                className="relative bg-apex-surface/50 border border-apex-gold/10 overflow-hidden rounded-xl md:rounded-2xl shadow-2xl shadow-apex-gold/10"
               >
-                {/* Imagen (altura reducida) */}
+                {/* Imagen más baja */}
                 <div className="relative h-52 md:h-60 lg:h-64 overflow-hidden">
                   <Image
                     src={activeClass.image}
                     alt={`Clase de ${activeClass.name}`}
                     fill
-                    className="object-cover grayscale-45% hover:grayscale-0 hover:scale-110 transition-all duration-700 ease-out"
+                    className="object-cover grayscale-40 hover:grayscale-0 hover:scale-110 transition-all duration-700 ease-out"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 50vw"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-apex-bg via-apex-bg/70 to-transparent" />
@@ -221,11 +243,11 @@ export default function SignatureClassesSection() {
                   </div>
                 </div>
 
-                {/* Contenido (padding más breve) */}
-                <div className="p-5 md:p-6 lg:p-7">
+                {/* Contenido más compacto */}
+                <div className="p-6 md:p-7 lg:p-8">
                   <div className="flex items-baseline justify-between gap-4 mb-3">
                     <div className="flex items-baseline gap-3">
-                      <span className="text-[11px] text-apex-gold/70 font-mono tracking-wider uppercase">
+                      <span className="text-[11px] text-apex-gold/70 font-mono tracking-widest uppercase">
                         Signature Studio
                       </span>
                       <span className="hidden md:inline-block w-8 h-px bg-apex-gold/60" />
@@ -239,13 +261,12 @@ export default function SignatureClassesSection() {
                     {activeClass.name}
                   </h3>
 
-                  <p className="text-apex-gray text-sm md:text-[15px] leading-relaxed font-light mb-5 max-w-xl">
+                  <p className="text-apex-gray text-sm md:text-base leading-relaxed font-light mb-5 max-w-xl">
                     {activeClass.description}
                   </p>
 
-                  {/* Línea + microcopy + CTA, compactados */}
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div className="flex-1 max-w-md">
+                    <div className="flex-1">
                       <div className="relative h-px bg-white/10 overflow-hidden">
                         <div className="absolute inset-0 bg-apex-gold scale-x-100 origin-left" />
                       </div>
@@ -257,16 +278,7 @@ export default function SignatureClassesSection() {
 
                     <button
                       type="button"
-                      className="
-                        inline-flex items-center justify-center 
-                        px-4 py-2.5 
-                        border border-apex-gold/60 
-                        text-[10px] md:text-[11px]
-                        font-bold uppercase tracking-widest 
-                        text-apex-gold 
-                        hover:bg-apex-gold hover:text-apex-bg 
-                        transition-colors duration-300
-                      "
+                      className="inline-flex items-center justify-center px-5 py-3 border border-apex-gold/60 text-[11px] font-bold uppercase tracking-widest text-apex-gold hover:bg-apex-gold hover:text-apex-bg transition-colors duration-300"
                     >
                       Ver horarios de {activeClass.name}
                     </button>
@@ -274,7 +286,7 @@ export default function SignatureClassesSection() {
                 </div>
               </motion.article>
             </AnimatePresence>
-          </div>
+          </motion.div>
         </div>
       </motion.div>
     </section>
