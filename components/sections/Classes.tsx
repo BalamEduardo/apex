@@ -218,7 +218,7 @@ export default function SignatureClassesSection() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="relative bg-apex-surface/50 border border-apex-gold/10 overflow-hidden rounded-xl md:rounded-2xl shadow-2xl shadow-apex-gold/10"
+                className="relative bg-apex-surface/80 border border-apex-gold/30 overflow-hidden rounded-xl md:rounded-2xl shadow-xl shadow-apex-gold/20"
               >
                 {/* Imagen más baja */}
                 <div className="relative h-52 md:h-60 lg:h-64 overflow-hidden">

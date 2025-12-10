@@ -194,7 +194,7 @@ export default function TdeeCalculator() {
 
           {/* Tarjeta Calculadora */}
           <motion.div
-            className="bg-apex-surface/50 border border-apex-gold/20 p-8 md:p-12 relative backdrop-blur-sm shadow-2xl shadow-black/50"
+            className="bg-apex-surface/80 border border-apex-gold/20 p-8 md:p-12 relative backdrop-blur-sm shadow-2xl shadow-black/50"
             variants={cardVariants}
           >
             {/* Esquinas Doradas Animadas */}
