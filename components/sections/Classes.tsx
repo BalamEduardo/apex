@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { apexEase } from '@/lib/animations';
 
 // Datos de las clases signature
 const signatureClasses = [
@@ -37,8 +38,6 @@ const signatureClasses = [
       'https://images.unsplash.com/photo-1554284126-aa88f22d8b74?q=80&w=2094&auto=format&fit=crop',
   },
 ];
-
-const apexEase = [0.16, 1, 0.3, 1] as const;
 
 // Sección completa
 const sectionVariants = {

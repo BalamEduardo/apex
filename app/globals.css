@@ -118,6 +118,7 @@
   html {
     background-color: var(--color-apex-bg);
     color: var(--color-apex-white);
+    scroll-behavior: smooth;
   }
   
   body {
@@ -126,6 +127,11 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Offset para anchor links debido al header fijo */
+  :target {
+    scroll-margin-top: 80px;
   }
 }
 

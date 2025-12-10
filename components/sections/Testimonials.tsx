@@ -99,36 +99,51 @@ export default function Testimonials() {
         </div>
 
         {/* Carrusel horizontal nativo */}
-        <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory no-scrollbar">
-          {TESTIMONIALS.map((testimonial, index) => (
-            <div
-              key={index}
-              className="snap-start shrink-0 w-[280px] h-auto relative group"
-            >
-              <div className="h-full relative overflow-hidden border border-white/10 bg-apex-surface/80 backdrop-blur-sm p-6">
-                <div className="relative z-10 h-full flex flex-col">
-                  <Quote
-                    className="h-8 w-8 text-apex-gold/30 mb-4"
-                    aria-hidden="true"
-                  />
-                  <div className="mb-4 flex items-center gap-2 text-[0.6rem] tracking-[0.3em] uppercase text-apex-gold font-semibold">
-                    <span className="h-px w-6 bg-apex-gold/50" />
-                    <span>{testimonial.name}</span>
-                  </div>
-                  <blockquote className="mb-4">
-                    <p className="text-base leading-relaxed text-white/85 font-serif italic">
-                      "{testimonial.quote}"
-                    </p>
-                  </blockquote>
-                  <div className="border-t border-white/10 pt-4 mt-auto">
-                    <p className="text-[0.65rem] tracking-[0.3em] uppercase text-apex-gold font-semibold">
-                      {testimonial.title}
-                    </p>
+        <div className="relative">
+          <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory no-scrollbar">
+            {TESTIMONIALS.map((testimonial, index) => (
+              <div
+                key={index}
+                className="snap-start shrink-0 w-[85vw] sm:w-[320px] h-auto relative group"
+              >
+                <div className="h-full relative overflow-hidden border border-white/10 bg-apex-surface/80 backdrop-blur-sm p-6">
+                  <div className="relative z-10 h-full flex flex-col">
+                    <Quote
+                      className="h-8 w-8 text-apex-gold/30 mb-4"
+                      aria-hidden="true"
+                    />
+                    <div className="mb-4 flex items-center gap-2 text-[0.6rem] tracking-[0.3em] uppercase text-apex-gold font-semibold">
+                      <span className="h-px w-6 bg-apex-gold/50" />
+                      <span>{testimonial.name}</span>
+                    </div>
+                    <blockquote className="mb-4">
+                      <p className="text-base leading-relaxed text-white/85 font-serif italic">
+                        "{testimonial.quote}"
+                      </p>
+                    </blockquote>
+                    <div className="border-t border-white/10 pt-4 mt-auto">
+                      <p className="text-[0.65rem] tracking-[0.3em] uppercase text-apex-gold font-semibold">
+                        {testimonial.title}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          
+          {/* Gradiente fade para indicar más contenido */}
+          <div className="absolute right-0 top-0 bottom-4 w-16 bg-linear-to-l from-apex-bg to-transparent pointer-events-none" aria-hidden="true" />
+          
+          {/* Indicador de scroll */}
+          <div className="flex justify-center gap-1.5 mt-4" aria-hidden="true">
+            {TESTIMONIALS.map((_, index) => (
+              <div
+                key={index}
+                className="h-1 w-1 rounded-full bg-white/20"
+              />
+            ))}
+          </div>
         </div>
       </div>
 

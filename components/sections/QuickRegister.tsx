@@ -2,11 +2,12 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { apexEase } from '@/lib/animations';
+import { validateMexicanPhone, isApexOpen } from '@/lib/utils';
 
-// Variantes de animación
-const apexEase = [0.16, 1, 0.3, 1] as const;
+// Variantes de animación locales
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -70,8 +71,8 @@ export default function QuickRegister() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!phone || phone.length < 10) {
-      setError('Ingresa un número válido de al menos 10 dígitos.');
+    if (!validateMexicanPhone(phone)) {
+      setError('Ingresa un número válido de 10 dígitos.');
       return;
     }
 
@@ -80,7 +81,7 @@ export default function QuickRegister() {
 
     // Simulación de llamada a Supabase
     // const { error } = await supabase.from('leads').insert({ phone, source: 'landing' });
-    
+
     setTimeout(() => {
       setStatus('success');
       console.log('Lead registrado:', phone);
@@ -94,13 +95,13 @@ export default function QuickRegister() {
   };
 
   return (
-    <section 
+    <section
       id="contacto"
       aria-labelledby="contacto-heading"
       className="py-24 bg-apex-bg relative flex justify-center items-center overflow-hidden border-t border-white/5"
     >
       {/* Decoración de fondo animada */}
-      <motion.div 
+      <motion.div
         aria-hidden="true"
         className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent opacity-50 pointer-events-none"
         initial={{ scale: 0.8, opacity: 0 }}
@@ -112,8 +113,9 @@ export default function QuickRegister() {
       <div className="relative z-10 w-full max-w-md px-6 text-center">
         <AnimatePresence mode="wait">
           {status === 'success' ? (
-            // ESTADO DE ÉXITO
-            <motion.div 
+            <>
+            {/* ESTADO DE ÉXITO */}
+            <motion.div
               key="success"
               className="flex flex-col items-center gap-4"
               variants={successVariants}
@@ -123,15 +125,14 @@ export default function QuickRegister() {
               role="status"
               aria-live="polite"
             >
-              <motion.div 
+              <motion.div
                 className="w-16 h-16 rounded-full bg-apex-gold/10 flex items-center justify-center text-apex-gold mb-2"
                 variants={iconVariants}
               >
                 <CheckCircle2 className="w-8 h-8" />
               </motion.div>
-              
-              <motion.h3 
-                id="contacto-heading"
+
+              <motion.h3
                 className="text-2xl font-serif italic text-white"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -139,8 +140,8 @@ export default function QuickRegister() {
               >
                 Bienvenido a la Élite.
               </motion.h3>
-              
-              <motion.p 
+
+              <motion.p
                 className="text-apex-gray text-sm font-light"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -162,98 +163,140 @@ export default function QuickRegister() {
                 Registrar otro número
               </motion.button>
             </motion.div>
+            
+              {/* Mostrar horario también en estado de éxito */}
+            <ScheduleBlock variants={itemVariants} />
+            </>
           ) : (
-            // FORMULARIO DE REGISTRO
-            <motion.div 
-              key="form"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.5 }}
-              exit="exit"
+          // FORMULARIO DE REGISTRO
+          <motion.div
+            key="form"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            exit="exit"
+          >
+            <motion.h2
+              id="contacto-heading"
+              className="text-3xl md:text-4xl font-serif italic text-white mb-2"
+              variants={itemVariants}
             >
-              <motion.h2 
-                className="text-3xl md:text-4xl font-serif italic text-white mb-2"
-                variants={itemVariants}
-              >
-                Empieza tu Ascenso
-              </motion.h2>
-              
-              <motion.p 
-                className="text-apex-gray text-sm mb-10 font-light tracking-wide"
-                variants={itemVariants}
-              >
-                Acceso exclusivo. Plazas limitadas cada mes.
-              </motion.p>
+              Empieza tu Ascenso
+            </motion.h2>
 
-              <motion.form 
-                onSubmit={handleSubmit} 
-                className="relative group"
-                variants={itemVariants}
-                aria-describedby={error ? 'quick-phone-error' : undefined}
-              >
-                <label htmlFor="quick-phone" className="sr-only">
-                  Número de celular
-                </label>
-                <motion.input
-                  id="quick-phone"
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Ingresa tu número celular..."
-                  minLength={10}
-                  maxLength={15}
-                  required
-                  className={`
+            <motion.p
+              className="text-apex-gray text-sm mb-10 font-light tracking-wide"
+              variants={itemVariants}
+            >
+              Acceso exclusivo. Plazas limitadas cada mes.
+            </motion.p>
+
+            <motion.form
+              onSubmit={handleSubmit}
+              className="relative group"
+              variants={itemVariants}
+              aria-describedby={error ? 'quick-phone-error' : undefined}
+            >
+              <label htmlFor="quick-phone" className="sr-only">
+                Número de celular
+              </label>
+              <motion.input
+                id="quick-phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Ingresa tu número celular..."
+                minLength={10}
+                maxLength={15}
+                required
+                className={`
                     w-full bg-transparent border-b py-4 pl-2 pr-12 text-white placeholder:text-white/20 
-                    focus:outline-none transition-colors text-lg tracking-wider
+                    focus:outline-none transition-all duration-300 text-lg tracking-wider
                     ${error ? 'border-red-500 focus:border-red-500' : 'border-white/20 focus:border-apex-gold'}
                   `}
-                  whileFocus={{ scale: 1.01 }}
-                  aria-invalid={!!error}
-                  aria-describedby={error ? 'quick-phone-error' : undefined}
-                />
-                
-                <motion.button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  className="absolute right-0 bottom-4 text-apex-gold hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={{ scale: 1.1, x: 3 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  {status === 'loading' ? (
-                    <Loader2 className="w-6 h-6 animate-spin" />
-                  ) : (
-                    <ArrowRight className="w-6 h-6" />
-                  )}
-                </motion.button>
-              </motion.form>
+                aria-invalid={!!error}
+                aria-describedby={error ? 'quick-phone-error' : undefined}
+              />
 
-              <AnimatePresence>
-                {error && (
-                  <motion.p 
-                    id="quick-phone-error"
-                    role="alert"
-                    className="mt-2 text-[11px] text-red-400 text-left"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                  >
-                    {error}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-              
-              <motion.p 
-                className="mt-4 text-[10px] text-gray-600 uppercase tracking-widest"
-                variants={itemVariants}
+              <motion.button
+                type="submit"
+                disabled={status === 'loading'}
+                className="absolute right-0 bottom-4 text-apex-gold hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                whileHover={{ scale: 1.1, x: 3 }}
+                whileTap={{ scale: 0.9 }}
               >
-                Sin spam. Solo excelencia.
-              </motion.p>
-            </motion.div>
+                {status === 'loading' ? (
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                ) : (
+                  <ArrowRight className="w-6 h-6" />
+                )}
+              </motion.button>
+            </motion.form>
+
+            <AnimatePresence>
+              {error && (
+                <motion.p
+                  id="quick-phone-error"
+                  role="alert"
+                  className="mt-2 text-[11px] text-red-500/90 text-left"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                >
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            <motion.p
+              className="mt-4 text-[10px] text-apex-gray/60 uppercase tracking-widest"
+              variants={itemVariants}
+            >
+              Sin spam. Solo excelencia.
+            </motion.p>
+
+            {/* Schedule block (reusable, animated) */}
+            <ScheduleBlock variants={itemVariants} />
+          </motion.div>
           )}
         </AnimatePresence>
       </div>
-    </section>
+    </section> 
+  );
+}
+
+// Reusable schedule block shown in both form and success states
+function ScheduleBlock({ variants }: { variants?: Variants }) {
+  const isOpen = isApexOpen();
+  
+  return (
+    <motion.div
+      variants={variants}
+      className="mt-8 border border-white/10 bg-apex-bg/60 px-5 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+    >
+      <div>
+        <p className="text-[10px] text-apex-gold uppercase tracking-widest font-mono">
+          Horario APEX
+        </p>
+        <p className="text-sm text-white mt-1">Lunes a Viernes · 5:00 – 23:00</p>
+        <p className="text-sm text-apex-gray">Sábados · 6:00 – 20:00 · Domingos · 7:00 – 15:00</p>
+      </div>
+
+      <div className={`text-[11px] uppercase tracking-widest font-mono flex items-center transition-colors ${
+        isOpen ? 'text-apex-gold' : 'text-apex-gray/60'
+      }`}>
+        {/* Animated status dot */}
+        <motion.span
+          className={`inline-block mr-2 h-2 w-2 rounded-3xl ${
+            isOpen ? 'bg-apex-gold' : 'bg-apex-gray/40'
+          }`}
+          aria-hidden="true"
+          animate={isOpen ? { scale: [1, 1.6, 1], opacity: [1, 0.6, 1] } : {}}
+          transition={{ duration: 1.6, repeat: Infinity, ease: apexEase }}
+        />
+        <span>{isOpen ? 'Abierto ahora' : 'Cerrado'}</span>
+      </div>
+    </motion.div>
   );
 }

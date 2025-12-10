@@ -20,7 +20,7 @@ const MenuToggleButton = ({ isOpen, onToggle }: MenuToggleButtonProps) => {
       onClick={onToggle}
       aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
       aria-expanded={isOpen}
-      className={`group fixed left-4 top-4 sm:left-6 sm:top-5 z-70 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full shadow-lg transition-all duration-500 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg ${isOpen ? 'bg-apex-gold shadow-apex-gold/10' : 'bg-white/95 shadow-black/20 hover:shadow-black/30'
+      className={`group fixed left-4 top-4 sm:left-6 sm:top-5 z-70 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full shadow-lg transition-all duration-500 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg ${isOpen ? 'bg-apex-gold shadow-apex-gold/10' : 'bg-white/95 backdrop-blur-sm shadow-black/30 hover:shadow-black/40'
         }`}
     >
       <span className="sr-only">{isOpen ? 'Cerrar menú' : 'Abrir menú'}</span>
@@ -81,11 +81,34 @@ export default function Header() {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  // Cerrar menú con Escape y bloquear scroll del body
+  useEffect(() => {
+    if (isMenuOpen) {
+      // Bloquear scroll del body
+      document.body.style.overflow = 'hidden';
+      
+      // Cerrar con Escape
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setIsMenuOpen(false);
+        }
+      };
+      
+      window.addEventListener('keydown', handleEscape);
+      return () => {
+        window.removeEventListener('keydown', handleEscape);
+        document.body.style.overflow = 'unset';
+      };
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isMenuOpen]);
+
   const menuItems = [
     { label: 'INICIO', href: '/#hero', description: 'Bienvenida' },
     { label: 'EXPERIENCIA', href: '/#experiencia', description: 'Filosofía · Espacio · Clases' },
-    { label: 'COACHES', href: '/#coaches', description: 'Nuestro equipo' },
-    { label: 'TESTIMONIOS', href: '/#testimonios', description: 'Lo que dicen' },
+    { label: 'COMUNIDAD', href: '/#comunidad', description: 'Coaches · Testimonios' },
+    { label: 'HORARIO', href: '/#horario', description: 'Clases y horarios' },
     { label: 'MEMBRESÍAS', href: '/#membresias', description: 'Planes exclusivos' },
     { label: 'CONTACTO', href: '/#contacto', description: 'Agenda tu visita' },
   ];
@@ -108,7 +131,7 @@ export default function Header() {
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <Link
               href="/"
-              className="group flex items-center gap-3 text-2xl font-bold tracking-widest-xl text-white hover:text-apex-gold transition-colors duration-300 ease-smooth font-sans"
+              className="group flex items-center gap-3 text-2xl font-bold tracking-widest-xl text-white hover:text-apex-gold transition-colors duration-300 ease-smooth font-sans focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded-lg"
             >
               {/* Logo simbolo: diamante (square rotado) con punto central */}
               <span className="relative inline-flex w-5 h-5 items-center justify-center">
@@ -122,7 +145,7 @@ export default function Header() {
           {/* Derecha: Calculadora TDEE */}
           <Link
             href="/calculadora"
-            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-white text-apex-bg font-medium hover:bg-apex-gold transition-colors duration-300 ease-smooth"
+            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-white text-apex-bg font-medium hover:bg-apex-gold transition-colors duration-300 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg"
           >
             <Calculator className="w-4 h-4" />
             <span className="text-[0.670rem] tracking-wider">CALCULADORA TDEE</span>
@@ -131,7 +154,7 @@ export default function Header() {
           {/* Mobile Icon for Calculator */}
           <Link
             href="/calculadora"
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-white text-apex-bg hover:bg-apex-gold transition-colors duration-300 ease-smooth"
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-white text-apex-bg hover:bg-apex-gold transition-colors duration-300 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg"
           >
             <Calculator className="w-5 h-5" />
           </Link>
@@ -162,7 +185,7 @@ export default function Header() {
                 key={item.label}
                 href={item.href}
                 onClick={toggleMenu}
-                className="group relative overflow-hidden"
+                className="group relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded-lg"
                 style={{
                   transitionDelay: isMenuOpen ? `${index * 80}ms` : '0ms',
                 }}
@@ -196,7 +219,10 @@ export default function Header() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 text-sm pb-8 border-t border-white/10 pt-8">
             <div className="flex flex-col gap-2">
               <span className="text-[0.65rem] tracking-widest-xl uppercase text-apex-gold/70 mb-1">Contacto</span>
-              <a href="mailto:hello@apex-studio.com" className="text-white/70 hover:text-apex-gold transition-colors">
+              <a 
+                href="mailto:hello@apex-studio.com" 
+                className="text-white/70 hover:text-apex-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded"
+              >
                 hello@apex-studio.com
               </a>
               <span className="text-white/50">Polanco, CDMX</span>
@@ -208,7 +234,7 @@ export default function Header() {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white/50 hover:text-apex-gold transition-colors duration-300"
+                  className="text-white/50 hover:text-apex-gold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" />
@@ -217,7 +243,7 @@ export default function Header() {
                   href="https://linkedin.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white/50 hover:text-apex-gold transition-colors duration-300"
+                  className="text-white/50 hover:text-apex-gold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />

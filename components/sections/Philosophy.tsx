@@ -76,7 +76,8 @@ export default function Philosophy() {
             </p>
             <a
               href="#sobre-nosotros"
-              className="inline-flex items-center gap-2 text-apex-gold text-sm font-bold tracking-widest hover:gap-4 transition-all duration-300 uppercase"
+              aria-label="Conocer más sobre nuestra filosofía"
+              className="inline-flex items-center gap-2 text-apex-gold text-sm font-bold tracking-widest hover:gap-4 transition-all duration-300 uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded py-2"
             >
               Conoce más sobre nosotros <ArrowRight className="w-4 h-4" />
             </a>

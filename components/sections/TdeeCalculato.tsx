@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Lock, Activity, User, Target, Info } from 'lucide-react';
+import { apexEase, fadeUp, fadeUpSm, sectionVariants } from '@/lib/animations';
 
 type ActivityLevel = 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
 type Goal = 'cut' | 'maintain' | 'bulk';
@@ -13,44 +14,6 @@ const GOAL_LABELS: Record<Goal, string> = {
   cut: 'Definición (déficit calórico)',
   maintain: 'Mantenimiento',
   bulk: 'Volumen (superávit calórico)',
-};
-
-// Sistema de animación APEX
-const apexEase = [0.16, 1, 0.3, 1] as const;
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: apexEase,
-    },
-  },
-};
-
-const fadeUpSm = {
-  hidden: { opacity: 0, y: 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: apexEase,
-    },
-  },
-};
-
-const sectionVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
-    },
-  },
 };
 
 const cardVariants = {
@@ -268,9 +231,13 @@ export default function TdeeCalculator() {
                   }}
                 >
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    <div role="radiogroup" aria-label="Genero" className="flex gap-3">
                     {/* Género */}
-                    <motion.div className="flex gap-3 w-full" variants={formItemVariants}>
+                    <motion.div 
+                      role="radiogroup" 
+                      aria-label="Género"
+                      className="flex gap-3 w-full" 
+                      variants={formItemVariants}
+                    >
                       <motion.button
                         type="button"
                         role="radio"
@@ -280,10 +247,11 @@ export default function TdeeCalculator() {
                         onClick={() => setGender('male')}
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`flex-1 md:flex-none min-w-0 md:min-w-[140px] flex items-center justify-center gap-2 px-4 py-2 md:py-3 text-[11px] md:text-sm tracking-widest uppercase transition-all duration-300 rounded-lg border shadow-sm ${gender === 'male'
+                        className={`flex-1 flex items-center justify-center gap-2 px-4 min-h-11 py-3 text-[11px] md:text-sm tracking-widest uppercase transition-all duration-300 rounded-lg border shadow-sm ${
+                          gender === 'male'
                             ? 'bg-apex-gold text-apex-bg border-apex-gold font-bold'
                             : 'bg-transparent text-apex-gray border-white/10 hover:border-white/30'
-                          }`}
+                        }`}
                       >
                         Hombre
                       </motion.button>
@@ -296,28 +264,18 @@ export default function TdeeCalculator() {
                         onClick={() => setGender('female')}
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`flex-1 md:flex-none min-w-0 md:min-w-[140px] flex items-center justify-center gap-2 px-4 py-2 md:py-3 text-[11px] md:text-sm tracking-widest uppercase transition-all duration-300 rounded-lg border shadow-sm ${gender === 'female'
+                        className={`flex-1 flex items-center justify-center gap-2 px-4 min-h-11 py-3 text-[11px] md:text-sm tracking-widest uppercase transition-all duration-300 rounded-lg border shadow-sm ${
+                          gender === 'female'
                             ? 'bg-apex-gold text-apex-bg border-apex-gold font-bold'
                             : 'bg-transparent text-apex-gray border-white/10 hover:border-white/30'
-                          }`}
+                        }`}
                       >
                         Mujer
                       </motion.button>
                     </motion.div>
-                    </div>
 
                   {/* Inputs Básicos */}
-                  <motion.div className="grid grid-cols-3 gap-4" variants={formItemVariants}>
-                    <InputGroup
-                      label="Edad"
-                      placeholder="25"
-                      type="number"
-                      value={age}
-                      onChange={setAge}
-                      min={10}
-                      max={120}
-                      required
-                    />
+                  <motion.div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4" variants={formItemVariants}>
                     <InputGroup
                       label="Peso (kg)"
                       placeholder="75"
@@ -337,6 +295,17 @@ export default function TdeeCalculator() {
                       min={50}
                       max={272}
                       required
+                    />
+                    <InputGroup
+                      label="Edad"
+                      placeholder="25"
+                      type="number"
+                      value={age}
+                      onChange={setAge}
+                      min={10}
+                      max={120}
+                      required
+                      className="col-span-2 md:col-span-1"
                     />
                   </motion.div>
 
@@ -363,13 +332,13 @@ export default function TdeeCalculator() {
                         id="nivel-actividad"
                         value={activity}
                         onChange={(e) => setActivity(e.target.value as ActivityLevel)}
-                        className={`${inputBase} appearance-none`}
+                        className={`${inputBase} appearance-none pr-10`}
                       >
-                        <option value="sedentary">Sedentario (Oficina, nada de ejercicio)</option>
-                        <option value="light">Ligero (1-3 días/sem o trabajo de pie)</option>
-                        <option value="moderate">Moderado (3-5 días/sem o vida activa)</option>
-                        <option value="active">Activo (6-7 días/sem o trabajo físico)</option>
-                        <option value="very_active">Muy Activo (Doble sesión/atleta)</option>
+                        <option value="sedentary">Sedentario (poco o nada)</option>
+                        <option value="light">Ligero (1-3 días/sem)</option>
+                        <option value="moderate">Moderado (3-5 días/sem)</option>
+                        <option value="active">Activo (6-7 días/sem)</option>
+                        <option value="very_active">Muy Activo (doble sesión)</option>
                       </select>
                       {/* Flecha custom para el select */}
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-apex-gray">
@@ -395,10 +364,11 @@ export default function TdeeCalculator() {
                           onClick={() => setGoal(g)}
                           whileHover={{ scale: 1.03 }}
                           whileTap={{ scale: 0.97 }}
-                          className={`py-3 text-[10px] md:text-xs uppercase tracking-wider border transition-all ${goal === g
-                            ? 'border-apex-gold text-apex-gold bg-apex-gold/5'
-                            : 'border-white/10 text-apex-gray hover:border-white/30'
-                            }`}
+                          className={`min-h-11 py-3 px-2 text-[10px] md:text-xs uppercase tracking-wider border transition-all ${
+                            goal === g
+                              ? 'border-apex-gold text-apex-gold bg-apex-gold/5 font-semibold'
+                              : 'border-white/10 text-apex-gray hover:border-white/30'
+                          }`}
                         >
                           {g === 'cut' ? 'Definición' : g === 'maintain' ? 'Mantener' : 'Volumen'}
                         </motion.button>
@@ -601,6 +571,7 @@ function InputGroup({
   max,
   required,
   hint,
+  className,
 }: {
   label: string;
   value: string;
@@ -611,6 +582,7 @@ function InputGroup({
   max?: number;
   required?: boolean;
   hint?: React.ReactNode;
+  className?: string;
 }) {
   const id = label
     .toLowerCase()
@@ -620,7 +592,7 @@ function InputGroup({
   const describedBy = hint ? `${id}-hint` : undefined;
 
   return (
-    <div className="space-y-2">
+    <div className={`space-y-2 ${className || ''}`}>
       <label htmlFor={id} className="text-[8px] md:text-xs text-apex-gold uppercase tracking-widest font-bold">
         {label}
       </label>

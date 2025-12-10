@@ -4,6 +4,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Crown } from 'lucide-react';
+import { apexEase, fadeUp as fadeUpShared } from '@/lib/animations';
 
 const plans = [
   {
@@ -50,9 +51,7 @@ const plans = [
   },
 ];
 
-// Sistema de animación APEX (mismo easing que en otras secciones)
-const apexEase = [0.16, 1, 0.3, 1] as const;
-
+// Variantes locales específicas
 const sectionContainer = {
   hidden: { opacity: 0 },
   visible: {
@@ -64,17 +63,7 @@ const sectionContainer = {
   },
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 32 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: apexEase,
-    },
-  },
-};
+const fadeUp = fadeUpShared;
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -112,7 +101,7 @@ export default function Memberships() {
             className="text-4xl md:text-6xl font-light text-white uppercase leading-none"
           >
             Elige tu{' '}
-            <span className="text-apex-gold font-serif italic normal-case">
+            <span className="text-apex-gold font-serif italic uppercase">
               Legado
             </span>
           </h2>
@@ -197,18 +186,19 @@ export default function Memberships() {
               </ul>
 
               {/* Botón CTA */}
-              <motion.button
-                type="button"
+              <motion.a
+                href="#contacto"
+                aria-label={`Contratar membresía ${plan.name} - ${plan.price} pesos al mes`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`w-full py-4 text-[11px] font-bold uppercase tracking-widest transition-all duration-300 ${
+                className={`block w-full py-4 text-center text-[11px] font-bold uppercase tracking-widest transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg ${
                   plan.highlight
                     ? 'bg-apex-gold text-apex-bg hover:bg-white'
-                    : 'bg-transparent border border-white/20 text-white hover:border-apex-gold hover:text-apex-gold'
+                    : 'bg-transparent border border-white/20 text-white hover:border-apex-gold hover:bg-apex-gold/10 hover:text-apex-gold'
                 }`}
               >
                 {plan.name === 'Signature' ? 'Aplicar ahora' : 'Empezar ahora'}
-              </motion.button>
+              </motion.a>
             </motion.article>
           ))}
         </motion.div>
@@ -226,7 +216,8 @@ export default function Memberships() {
             <br className="md:hidden" />
             <a
               href="#contacto"
-              className="text-apex-gold hover:underline decoration-1 underline-offset-4 ml-1"
+              aria-label="Contactar para agendar tour privado"
+              className="text-apex-gold hover:underline decoration-1 underline-offset-4 ml-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded px-1"
             >
               Contáctanos para un tour privado.
             </a>

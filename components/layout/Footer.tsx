@@ -19,7 +19,8 @@ export default function Footer() {
           </div>
           <a
             href="#contacto"
-            className="inline-flex items-center justify-center px-6 py-3 border border-apex-gold text-apex-gold text-xs font-bold uppercase tracking-[0.2em] hover:bg-apex-gold hover:text-apex-bg transition-colors"
+            aria-label="Solicitar tour privado - Ir a formulario de contacto"
+            className="inline-flex items-center justify-center px-6 py-3 min-h-11 border border-apex-gold text-apex-gold text-xs font-bold uppercase tracking-[0.2em] hover:bg-apex-gold hover:text-apex-bg transition-all duration-300 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg"
           >
             Solicitar tour privado
           </a>
@@ -55,22 +56,22 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-sm text-apex-gray">
               <li>
-                <a href="#filosofia" className="hover:text-apex-gold transition-colors">
+                <a href="#filosofia" className="hover:text-apex-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded inline-block">
                   Filosofía
                 </a>
               </li>
               <li>
-                <a href="#gallery" className="hover:text-apex-gold transition-colors">
+                <a href="#gallery" className="hover:text-apex-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded inline-block">
                   Zonas & Espacios
                 </a>
               </li>
               <li>
-                <a href="#membresias" className="hover:text-apex-gold transition-colors">
+                <a href="#membresias" className="hover:text-apex-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded inline-block">
                   Membresías
                 </a>
               </li>
               <li>
-                <a href="#calculadora" className="hover:text-apex-gold transition-colors">
+                <a href="#calculadora" className="hover:text-apex-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded inline-block">
                   Calculadora TDEE
                 </a>
               </li>
@@ -86,7 +87,7 @@ export default function Footer() {
               <address className="not-italic mt-3 space-y-2 text-sm text-apex-gray">
                 <a
                   href="mailto:hello@apex-studio.com"
-                  className="hover:text-apex-gold transition-colors"
+                  className="hover:text-apex-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded inline-block"
                 >
                   hello@apex-studio.com
                 </a>
@@ -100,16 +101,20 @@ export default function Footer() {
               </h4>
               <div className="flex gap-4">
                 <a
-                  href="#"
-                  className="text-apex-gray hover:text-apex-gold transition-colors"
-                  aria-label="Instagram"
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-apex-gray hover:text-apex-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded p-1"
+                  aria-label="Visítanos en Instagram"
                 >
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a
-                  href="#"
-                  className="text-apex-gray hover:text-apex-gold transition-colors"
-                  aria-label="LinkedIn"
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-apex-gray hover:text-apex-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded p-1"
+                  aria-label="Visítanos en LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />
                 </a>
@@ -148,8 +153,11 @@ export default function Footer() {
             <button
               type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="hover:text-apex-gold transition-colors"
+              aria-label="Volver arriba"
+              className="text-apex-gold hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded px-2 py-1"
             >
+              className="hover:text-apex-gold transition-colors"
+            
               Volver arriba
             </button>
           </div>

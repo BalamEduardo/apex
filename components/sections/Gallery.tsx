@@ -66,7 +66,7 @@ function ZoneSection({ zone, index }: { zone: (typeof zones)[0]; index: number }
       <div
         className={`
         w-full md:w-[40%] h-auto md:h-screen 
-        md:sticky md:top-0 z-20 
+        md:sticky md:top-0 z-30
         flex flex-col justify-center px-8 md:px-16 
         bg-apex-bg 
         ${isLeft ? 'md:border-r' : 'md:border-l'} border-white/5

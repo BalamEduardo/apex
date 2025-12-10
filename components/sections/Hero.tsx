@@ -41,7 +41,8 @@ export default function Hero() {
         {/* CTA Button */}
         <a
           href="#contacto"
-          className="group flex items-center gap-2 md:gap-3 px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white text-apex-bg font-semibold text-sm md:text-lg transition-all duration-300 hover:bg-apex-gold hover:scale-105 animate-hero-lift delay-300"
+          aria-label="Empezar ahora - Ir a formulario de contacto"
+          className="group inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4 rounded-full bg-white text-apex-bg font-semibold text-sm md:text-lg transition-all duration-300 hover:bg-apex-gold hover:scale-105 animate-hero-lift delay-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg shadow-lg hover:shadow-xl"
         >
           <span>EMPEZAR AHORA</span>
           <ArrowRight className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-1" />
