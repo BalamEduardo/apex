@@ -156,7 +156,7 @@ export default function Footer() {
               aria-label="Volver arriba"
               className="text-apex-gold hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg rounded px-2 py-1"
             >
-              className="hover:text-apex-gold transition-colors"
+        
             
               Volver arriba
             </button>
