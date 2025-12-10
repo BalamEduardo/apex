@@ -82,7 +82,7 @@ export default function ExperienciaSection() {
       {/* Sección 3: Espacios + Clases */}
       <div className="relative">
         {/* Label interno decorativo */}
-        <div className="sticky top-20 z-20 flex justify-center pointer-events-none py-6">
+        <div className="sticky top-20 z-40 flex justify-center pointer-events-none py-6">
           <div className="bg-apex-bg/90 backdrop-blur-md border border-apex-gold/30 px-4 sm:px-6 py-2.5 sm:py-2 rounded-full shadow-lg shadow-black/20">
             <span className="text-apex-gold font-mono text-[10px] sm:text-xs tracking-widest uppercase font-semibold">
               03 · Espacio &amp; Clases

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Quote } from 'lucide-react';
 
@@ -58,6 +58,8 @@ const TESTIMONIALS: Testimonial[] = [
 
 export default function Testimonials() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   // Scroll solo para desktop (el contenedor desktop tiene la ref)
   const { scrollYProgress } = useScroll({
@@ -71,6 +73,39 @@ export default function Testimonials() {
   const totalWidth = totalCards * (cardWidth + gap);
 
   const x = useTransform(scrollYProgress, [0, 1], [200, -totalWidth + 800]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const children = Array.from(el.children) as HTMLElement[];
+
+    const onScroll = () => {
+      const scrollLeft = el.scrollLeft;
+      let closest = 0;
+      let minDiff = Infinity;
+      children.forEach((child, i) => {
+        const diff = Math.abs(child.offsetLeft - scrollLeft);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closest = i;
+        }
+      });
+      setActiveIndex(closest);
+    };
+
+    el.addEventListener('scroll', onScroll, { passive: true });
+    // initial
+    onScroll();
+
+    const onResize = () => onScroll();
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
 
   return (
     <section id="testimonios" className="relative bg-apex-bg border-t border-white/5">
@@ -100,7 +135,7 @@ export default function Testimonials() {
 
         {/* Carrusel horizontal nativo */}
         <div className="relative">
-          <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory no-scrollbar">
+          <div ref={scrollRef} className="relative flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 snap-x snap-mandatory no-scrollbar">
             {TESTIMONIALS.map((testimonial, index) => (
               <div
                 key={index}
@@ -131,16 +166,20 @@ export default function Testimonials() {
               </div>
             ))}
           </div>
+
+          {/* Gradiente eliminado por petición del usuario */}
           
-          {/* Gradiente fade para indicar más contenido */}
-          <div className="absolute right-0 top-0 bottom-4 w-16 bg-linear-to-l from-apex-bg to-transparent pointer-events-none" aria-hidden="true" />
-          
-          {/* Indicador de scroll */}
-          <div className="flex justify-center gap-1.5 mt-4" aria-hidden="true">
+          {/* Indicador de scroll (mobile) */}
+          <div className="flex justify-center gap-1.5 mt-4" aria-label="Indicador de posición">
             {TESTIMONIALS.map((_, index) => (
               <div
                 key={index}
-                className="h-1 w-1 rounded-full bg-white/20"
+                className={
+                  `h-1 rounded-full transition-all duration-300 ${
+                    activeIndex === index ? 'w-10 bg-white' : 'w-6 bg-white/20'
+                  }`
+                }
+                aria-label={`Testimonio ${index + 1}`}
               />
             ))}
           </div>

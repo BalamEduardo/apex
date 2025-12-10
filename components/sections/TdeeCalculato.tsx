@@ -152,7 +152,7 @@ export default function TdeeCalculator() {
           className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={sectionVariants}
         >
           {/* Texto y Explicación */}

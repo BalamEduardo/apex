@@ -118,7 +118,7 @@ export default function ClassScheduleSection() {
         className="max-w-7xl mx-auto"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.1 }}
         variants={sectionVariants}
       >
         {/* Encabezado */}
