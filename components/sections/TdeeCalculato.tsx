@@ -429,13 +429,35 @@ export default function TdeeCalculator() {
                     {!isSubmitted ? (
                       <motion.div
                             key="lead-form"
-                            className="relative bg-apex-bg/20 border border-white/5 p-6 mt-8 overflow-hidden group"
+                            className="relative bg-apex-bg/20 border border-white/5 mt-8 overflow-hidden group"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ delay: 0.3, duration: 0.5 }}
                           >
-                            <div className="absolute inset-0 backdrop-blur-md bg-apex-bg/40 z-10 flex flex-col items-center justify-center p-6 text-center">
+                            {/* Fondo borroso simulado (detrás del overlay) */}
+                            <div
+                              className="absolute inset-0 p-6 opacity-30 filter blur-sm select-none space-y-3 pointer-events-none"
+                              aria-hidden="true"
+                            >
+                              <div className="flex justify-between text-sm text-apex-gray/80">
+                                <span>Proteínas</span>
+                                <span>???g</span>
+                              </div>
+                              <div className="w-full h-1 bg-apex-surface rounded">
+                                <div className="w-1/3 h-full bg-apex-gray"></div>
+                              </div>
+                              <div className="flex justify-between text-sm text-apex-gray/80">
+                                <span>Grasas</span>
+                                <span>???g</span>
+                              </div>
+                              <div className="w-full h-1 bg-apex-surface rounded">
+                                <div className="w-1/4 h-full bg-apex-gray"></div>
+                              </div>
+                            </div>
+
+                            {/* Overlay (en flujo) para que no se corte en mobile */}
+                            <div className="relative z-10 backdrop-blur-md bg-apex-bg/40 flex flex-col items-center justify-center p-6 text-center">
                           <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
@@ -450,7 +472,7 @@ export default function TdeeCalculator() {
                             Obtén la distribución exacta de proteínas, grasas y carbohidratos para estas calorías.
                           </p>
 
-                          <form onSubmit={handleLeadSubmit} className="flex w-full gap-2">
+                          <form onSubmit={handleLeadSubmit} className="flex flex-col sm:flex-row w-full gap-2">
                             <label htmlFor="apex-telefono" className="sr-only">Teléfono</label>
                             <input
                               id="apex-telefono"
@@ -465,28 +487,11 @@ export default function TdeeCalculator() {
                               type="submit"
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              className="bg-apex-gold text-apex-bg px-4 py-2 font-bold uppercase text-xs hover:bg-white transition-colors "
+                              className="bg-apex-gold text-apex-bg px-4 py-2 font-bold uppercase text-xs hover:bg-white transition-colors w-full sm:w-auto"
                             >
                               Ver
                             </motion.button>
                           </form>
-                        </div>
-                        {/* Fondo borroso simulado */}
-                        <div className="opacity-30 filter blur-sm select-none space-y-3" aria-hidden="true">
-                          <div className="flex justify-between text-sm text-apex-gray/80">
-                            <span>Proteínas</span>
-                            <span>???g</span>
-                          </div>
-                          <div className="w-full h-1 bg-apex-surface rounded">
-                            <div className="w-1/3 h-full bg-apex-gray"></div>
-                          </div>
-                          <div className="flex justify-between text-sm text-apex-gray/80">
-                            <span>Grasas</span>
-                            <span>???g</span>
-                          </div>
-                          <div className="w-full h-1 bg-apex-surface rounded">
-                            <div className="w-1/4 h-full bg-apex-gray"></div>
-                          </div>
                         </div>
                       </motion.div>
                     ) : (

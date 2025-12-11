@@ -57,10 +57,7 @@ export default function Header() {
   const isHome = pathname === '/' || pathname === '';
 
   useEffect(() => {
-    if (!isHome) {
-      setScrolled(true);
-      return;
-    }
+    if (!isHome) return;
 
     let ticking = false;
     const onScroll = () => {
@@ -144,7 +141,7 @@ export default function Header() {
 
           {/* Derecha: Calculadora TDEE */}
           <Link
-            href="/calculadora"
+            href="/#calculadora"
             className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-white text-apex-bg font-medium hover:bg-apex-gold transition-colors duration-300 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg"
           >
             <Calculator className="w-4 h-4" />
@@ -153,7 +150,7 @@ export default function Header() {
 
           {/* Mobile Icon for Calculator */}
           <Link
-            href="/calculadora"
+            href="/#calculadora"
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-white text-apex-bg hover:bg-apex-gold transition-colors duration-300 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apex-gold focus-visible:ring-offset-2 focus-visible:ring-offset-apex-bg"
           >
             <Calculator className="w-5 h-5" />
